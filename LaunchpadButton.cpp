@@ -17,5 +17,5 @@ bool LaunchpadButton::isButtonPressed() {
 	return DigitalRead();
 #else
 	return false;
-#endif;
+#endif
 }
