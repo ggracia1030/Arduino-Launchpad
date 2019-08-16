@@ -5,16 +5,16 @@ Component::Component()
 	pin = -1;
 }
 
-Component::Component(unsigned int _pin, PinMode pinMode) {
+Component::Component(unsigned int _pin, PinMode _pinMode) {
 	pin = _pin;
 #if defined(__AVR__) || (__avr__)
-	if (pinMode == _OUTPUT_) {
+	if (_pinMode == _OUTPUT_) {
 		pinMode(pin, OUTPUT);
 	}
-	else if (pinMode == _INPUT_) {
+	else if (_pinMode == _INPUT_) {
 		pinMode(pin, INPUT);
 	}
-	else if (pinMode == _INPUT_PULLUP_) {
+	else if (_pinMode == _INPUT_PULLUP_) {
 		pinMode(pin, INPUT_PULLUP);
 	}
 #endif

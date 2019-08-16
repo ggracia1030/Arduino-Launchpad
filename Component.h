@@ -10,7 +10,7 @@ public:
 	enum PinMode {_OUTPUT_, _INPUT_, _INPUT_PULLUP_};
 
 	Component();
-	Component(unsigned int _pin, PinMode pinMode);
+	Component(unsigned int _pin, PinMode _pinMode);
 	~Component();
 
 	int GetPin() { return pin; }
