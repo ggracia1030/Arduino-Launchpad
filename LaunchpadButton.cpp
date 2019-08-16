@@ -4,7 +4,7 @@ LaunchpadButton::LaunchpadButton() : Component() {
 
 }
 
-LaunchpadButton::LaunchpadButton(int _pin) : Component(_pin) {
+LaunchpadButton::LaunchpadButton(unsigned int _pin, PinMode pinMode) : Component(_pin, pinMode) {
 
 }
 

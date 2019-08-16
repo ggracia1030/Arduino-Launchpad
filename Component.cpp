@@ -41,12 +41,12 @@ bool Component::DigitalRead()
 
 void Component::DigitalWrite(bool value)
 {
-#//if defined(__AVR__) || (__avr__)
+#if defined(__AVR__) || (__avr__)
 	if (value)
 		digitalWrite(pin, HIGH);
 
 	else digitalWrite(pin, LOW);
-//#endif
+#endif
 }
 
 int Component::AnalogRead()
