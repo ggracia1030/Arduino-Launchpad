@@ -1,27 +1,34 @@
 #include "LaunchpadButton.h"
 
 LaunchpadButton::LaunchpadButton() {
-	note = new BuzzerNotes();
+	sound = new BuzzerNotes();
 }
 
 LaunchpadButton::LaunchpadButton(int pin) {
     buttonPin = pin;
-    //pinMode(pin, INPUT_PULLUP);
-    note = new BuzzerNotes();
+#if defined (__AVR__) || (__avr__)
+    pinMode(pin, INPUT_PULLUP);
+#endif
+    sound = new BuzzerNotes();
 }
 
 LaunchpadButton::LaunchpadButton(int pin, BuzzerNotes::Notes _note, int octave) {
     buttonPin = pin;
-    //pinMode(pin, INPUT_PULLUP);
-    note = new BuzzerNotes(_note, octave);
+#if defined (__AVR__) || (__avr__)
+    pinMode(pin, INPUT_PULLUP);
+#endif
+    sound = new BuzzerNotes(_note, octave);
 }
 
 bool LaunchpadButton::IsButtonPressed() {
-    //return digitalRead(buttonPin) == LOW;
+#if defined (__AVR__) || (__avr__)
+    return digitalRead(buttonPin) == LOW;
+#else
 	return true;
+#endif
 }
 
 LaunchpadButton::~LaunchpadButton() {
-    if(note)
-        delete note;
+	if (sound)
+        delete sound;
 }
