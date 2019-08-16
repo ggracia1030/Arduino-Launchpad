@@ -2,27 +2,22 @@
 #define LAUNCHPAD_BUTTON_H
 
 #include "BuzzerNotes.h"
+#include "Component.h"
 
 #if defined(__AVR__) || (__avr__)
 	#include "Arduino.h"
 #endif
 
-class LaunchpadButton {
-    public:
-        LaunchpadButton();
-        LaunchpadButton(int pin);
-        LaunchpadButton(int pin, BuzzerNotes::Notes _note, int octave);
-        ~LaunchpadButton();
+class LaunchpadButton : public Component {
+public:
+    LaunchpadButton();
+	LaunchpadButton(int _pin);
+    ~LaunchpadButton();
 
-		BuzzerNotes* GetSound() { return sound; }
-        int GetButtonPin() { return buttonPin; }
-		void SetButtonPin(unsigned int value) { buttonPin = value; }
+	bool isButtonPressed();
 
-        bool IsButtonPressed();
+private:
 
-    private:
-        BuzzerNotes* sound;
-        int buttonPin;
 };
 
 #endif
