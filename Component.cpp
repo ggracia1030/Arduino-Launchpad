@@ -33,7 +33,7 @@ void Component::SetPin(unsigned int value)
 bool Component::DigitalRead()
 {
 #if defined(__AVR__) || (__avr__)
-	return if (digitalRead(pin) == HIGH);
+	return (digitalRead(pin) == HIGH);
 #else
 	return 0;
 #endif
