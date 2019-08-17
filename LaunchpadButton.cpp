@@ -1,11 +1,13 @@
 #include "LaunchpadButton.h"
 
-LaunchpadButton::LaunchpadButton() : Component() {
-
+LaunchpadButton::LaunchpadButton(char _keyboard) : Component() {
+	componentName = "Launchpad Button";
+	keyboard = _keyboard;
 }
 
-LaunchpadButton::LaunchpadButton(unsigned int _pin, PinMode pinMode) : Component(_pin, pinMode) {
-
+LaunchpadButton::LaunchpadButton(unsigned int _pin, PinMode pinMode, char _keyboard) : Component(_pin, pinMode) {
+	componentName = "Launchpad Button";
+	keyboard = _keyboard;
 }
 
 LaunchpadButton::~LaunchpadButton() {
@@ -13,9 +15,13 @@ LaunchpadButton::~LaunchpadButton() {
 }
 
 bool LaunchpadButton::isButtonPressed() {
-#if defined __ARDUINO__
+#if defined (__AVR__) || (__avr__)
 	return DigitalRead();
 #else
-	return false;
+	return Input::GetKey(keyboard);
 #endif
+}
+
+void LaunchpadButton::Action()
+{
 }

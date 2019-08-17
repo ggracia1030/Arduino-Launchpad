@@ -2,6 +2,9 @@
 
 #if defined(__AVR__) || (__avr__)
 #include "Arduino.h"
+#else
+#include <iostream>
+#include <string.h>
 #endif
 
 class Component
@@ -21,7 +24,12 @@ public:
 	int AnalogRead();
 	void AnalogWrite(unsigned int value);
 
-private:
+protected:
 	int pin;
+#if defined(__AVR__) || (__avr__)
+	String componentName;
+#else
+	std::string componentName;
+#endif
 };
 

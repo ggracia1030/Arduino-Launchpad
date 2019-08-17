@@ -2,17 +2,23 @@
 #define SOUND_BUTTON_H
 
 #include "LaunchpadButton.h"
-#include "BuzzerNotes.h"
+#include "Note.h"
+#include "SoundManager.h"
 
 class SoundButton : public LaunchpadButton {
 public:
-	SoundButton();
-	SoundButton(BuzzerNotes::Notes _note, int octave);
-	BuzzerNotes* GetSound() { return sound; }
 
+	SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char _keyboard);
+	SoundButton(SoundManager* _soundManager, Note::Notes _note, int octave, char _keyboard);
+	Note* GetSound() { return sound; }
+	void Action();
+	bool isButtonPressed();
 
 private:
-	BuzzerNotes* sound;
+	Note* sound;
+	int xPin, yPin;
+	SoundManager* soundManager;
+	
 };
 
 #endif

@@ -3,19 +3,22 @@
 Component::Component()
 {
 	pin = -1;
+	componentName = "Base Component";
 }
 
 Component::Component(unsigned int _pin, PinMode _pinMode) {
 	pin = _pin;
 #if defined(__AVR__) || (__avr__)
-	if (_pinMode == _OUTPUT_) {
-		pinMode(pin, OUTPUT);
-	}
-	else if (_pinMode == _INPUT_) {
-		pinMode(pin, INPUT);
-	}
-	else if (_pinMode == _INPUT_PULLUP_) {
-		pinMode(pin, INPUT_PULLUP);
+	switch (_pinMode) {
+		case _OUTPUT_:
+			pinMode(pin, OUTPUT);
+			break;
+		case _INPUT_:
+			pinMode(pin, INPUT);
+			break;
+		case _INPUT_PULLUP_:
+			pinMode(pin, INPUT_PULLUP);
+			break;
 	}
 #endif
 }
@@ -34,7 +37,9 @@ bool Component::DigitalRead()
 {
 #if defined(__AVR__) || (__avr__)
 	return (digitalRead(pin) == HIGH);
-#else
+#else 
+	std::cout << "\n----------------------------------------" << std::endl;
+	std::cout << "Digital Read of component " + componentName + " in pin : " << pin << std::endl;
 	return 0;
 #endif
 }
@@ -46,6 +51,9 @@ void Component::DigitalWrite(bool value)
 		digitalWrite(pin, HIGH);
 
 	else digitalWrite(pin, LOW);
+#else
+	std::cout << "\n----------------------------------------" << std::endl;
+	std::cout << "Digital Write of component " + componentName + " in pin : " << pin << " with value: " << value << std::endl;
 #endif
 }
 
@@ -54,6 +62,8 @@ int Component::AnalogRead()
 #if defined(__AVR__) || (__avr__)
 	return analogRead(pin);
 #else
+	std::cout << "\n----------------------------------------" << std::endl;
+	std::cout << "Analog Read of component: " + componentName << " in pin : " << pin << std::endl;
 	return 0;
 #endif
 }
@@ -62,5 +72,8 @@ void Component::AnalogWrite(unsigned int value)
 {
 #if defined(__AVR__) || (__avr__)
 	analogWrite(pin, value);
+#else
+	std::cout << "\n----------------------------------------" << std::endl;
+	std::cout << "Analog Write of component: " + componentName << " in pin : " << pin << " with value: " << value << std::endl;
 #endif
 }

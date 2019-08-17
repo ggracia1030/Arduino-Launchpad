@@ -1,12 +1,16 @@
-#ifndef BUZZER_NOTES_H
-#define BUZZER_NOTES_H
+#ifndef NOTE_H
+#define NOTE_H
 
-class BuzzerNotes {
+class Note {
 
     public:
         enum Notes {
             C, CS, D, DS, E, F, FS, G, GS, A, AS, B
-        };  
+        }; 
+
+		enum SoundType {
+
+		};
 
         int frequencies [84] = {
             33, 35, 37, 39, 41, 44, 46, 49, 52, 55, 58, 62,
@@ -18,8 +22,8 @@ class BuzzerNotes {
             2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951
         };
 
-        BuzzerNotes();
-        BuzzerNotes(Notes _note, int _ocatve);
+        Note();
+        Note(Notes _note, int _ocatve);
 
         void SetOctave(int value);
         void SetNote(Notes _note);
