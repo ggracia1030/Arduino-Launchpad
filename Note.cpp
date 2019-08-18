@@ -27,7 +27,7 @@ void Note::SetNote(Notes _note, int octave)
 	SetNote(_note);
 	SetOctave(octave);
 }
-
+#if !defined (__AVR__) && !defined (__avr__)
 std::string Note::ToString()
 {
 	std::string temp = "";
@@ -73,3 +73,4 @@ std::string Note::ToString()
 	temp += std::to_string(octave);
 	return temp;
 }
+#endif;
