@@ -73,4 +73,4 @@ std::string Note::ToString()
 	temp += std::to_string(octave);
 	return temp;
 }
-#endif;
+#endif
