@@ -5,8 +5,8 @@
 #include "Note.h"
 #include "SoundManager.h"
 
+#include "Arduino.h"
 #if defined(__AVR__) || (__avr__)
-#include <String>
 #endif
 
 
