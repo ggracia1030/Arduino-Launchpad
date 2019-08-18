@@ -5,7 +5,7 @@
 #include "SoundButton.h"
 #include "SoundManager.h"
 #include "Note.h"
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 #include <fstream>
 #include "Console.h"
 #endif
@@ -36,7 +36,7 @@ class LaunchpadManager {
 		SoundButton*** soundButtons;
 		SoundManager* soundManager;
         int length;
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 		Console* console;
 		Sprite LoadSprite(std::string SpriteAssetFileName);
 		EBackColor AtoBackColor(char c);

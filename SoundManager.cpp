@@ -1,5 +1,5 @@
 #include "SoundManager.h"
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 #include <iostream>
 #include <Windows.h>
 #endif
@@ -32,7 +32,7 @@ void SoundManager::SendNoteValue(short noteValue)
 
 void SoundManager::PlayNote(int noteFreq)
 {
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 	//std::cout << "Playing Note with freq: " << noteFreq << std::endl;
 	Beep(noteFreq, 100);
 #endif 
@@ -42,7 +42,7 @@ void SoundManager::PlayNote(int noteFreq)
 
 void SoundManager::PlayNote(Note* _note)
 {
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 	//std::cout << "Playing Note with freq: " << _note->GetFrequency() << std::endl;
 	Beep(_note->GetFrequency(), 100);
 #endif 

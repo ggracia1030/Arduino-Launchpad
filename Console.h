@@ -14,7 +14,7 @@ MADE IN FRANCISCO ARIAS (c)
 
 
 #pragma once
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 #include <Windows.h>
 #include <iostream>
 #include <string>

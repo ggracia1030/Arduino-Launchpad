@@ -1,4 +1,4 @@
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 #pragma once
 
 #include <Windows.h>

@@ -63,7 +63,7 @@ LaunchpadManager::LaunchpadManager(int _length) {
 	length = _length;
 	soundManager = new SoundManager(4000000, 3);
 	soundButtons = new SoundButton**[length];
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 	console = new Console();
 	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
 	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
@@ -90,7 +90,7 @@ LaunchpadButton* LaunchpadManager::GetButton(int _x, int _y) {
 
 void LaunchpadManager::Update() {
 	UpdateInput();
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 	Render();
 #endif
 }
@@ -109,7 +109,7 @@ void LaunchpadManager::UpdateInput() {
 
 void LaunchpadManager::Render()
 {
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 	console->CleanBuffers();
 
 	for (int y = 0; y < length; y++) {
@@ -139,7 +139,7 @@ LaunchpadManager::~LaunchpadManager() {
 	delete[] soundButtons;
 }
 
-#ifndef __AVR__ && __avr__
+#if !defined (__AVR__) && !defined (__avr__)
 
 Sprite LaunchpadManager::LoadSprite(std::string SpriteAssetFileName)
 {
