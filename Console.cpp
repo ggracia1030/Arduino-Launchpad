@@ -1,3 +1,4 @@
+#ifndef __AVR__ && __avr__
 #include "Console.h"
 
 int Console::width = 0;
@@ -219,3 +220,5 @@ Console::~Console()
 	if (foreColorScreenBuffer != nullptr)
 		delete[] foreColorScreenBuffer;
 }
+
+#endif

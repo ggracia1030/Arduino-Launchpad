@@ -1,3 +1,4 @@
+#ifndef __AVR__ && __avr__
 #pragma once
 
 #include <Windows.h>
@@ -51,3 +52,5 @@ public:
 		return false;
 	}
 };
+
+#endif

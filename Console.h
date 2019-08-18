@@ -14,6 +14,7 @@ MADE IN FRANCISCO ARIAS (c)
 
 
 #pragma once
+#ifndef __AVR__ && __avr__
 #include <Windows.h>
 #include <iostream>
 #include <string>
@@ -156,4 +157,6 @@ private:
 	void RenderBuffers() const;
 	void CleanBuffers();
 };
+
+#endif
 
