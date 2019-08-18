@@ -140,18 +140,23 @@ void LaunchpadManager::Render()
 }
 
 LaunchpadManager::~LaunchpadManager() {
-	if (soundButtons) {
+	if (soundButtons != nullptr) {
 		for (int y = 0; y < length; y++) {
 			for (int x = 0; x < length; x++) {
 				delete soundButtons[x][y];
 			}
-			delete soundButtons[y];
 		}
-		delete[] soundButtons;
+		if (soundButtons != nullptr)
+			delete[] soundButtons;
 	}
 
-	if(soundManager)
+	if(soundManager != nullptr)
 		delete soundManager;
+
+#if !defined (__AVR__) && !defined (__avr__)
+	if (console != nullptr)
+		delete console;
+#endif
 }
 
 #if !defined (__AVR__) && !defined (__avr__)

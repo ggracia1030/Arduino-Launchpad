@@ -35,7 +35,9 @@ SoundManager::SoundManager(long _oscillatorFreq, int _channels, Console* _consol
 #endif
 SoundManager::~SoundManager()
 {
-
+	if (channels != nullptr) {
+		delete[] channels;
+	}
 }
 
 void SoundManager::SendNoteValue(short noteValue)

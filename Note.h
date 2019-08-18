@@ -39,6 +39,8 @@ class Note {
         }
 #if !defined (__AVR__) && !defined (__avr__)
 		std::string ToString();
+#else
+		String ToString();
 #endif
         
     private:

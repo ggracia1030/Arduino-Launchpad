@@ -73,4 +73,50 @@ std::string Note::ToString()
 	temp += std::to_string(octave);
 	return temp;
 }
+#else 
+String Note::ToString()
+{
+	String temp = "";
+	switch (note) {
+	case C:
+		temp = "C";
+		break;
+	case CS:
+		temp = "C#";
+		break;
+	case D:
+		temp = "D";
+		break;
+	case DS:
+		temp = "D#";
+		break;
+	case E:
+		temp = "E";
+		break;
+	case F:
+		temp = "F";
+		break;
+	case FS:
+		temp = "F#";
+		break;
+	case G:
+		temp = "G";
+		break;
+	case GS:
+		temp = "G#";
+		break;
+	case A:
+		temp = "A";
+		break;
+	case AS:
+		temp = "A#";
+		break;
+	case B:
+		temp = "B";
+		break;
+	}
+
+	temp += String(octave);
+	return temp;
+}
 #endif

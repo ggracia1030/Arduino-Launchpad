@@ -39,8 +39,8 @@ class LaunchpadManager {
         int length;
 #if !defined (__AVR__) && !defined (__avr__)
 		friend class SoundManager;
-
 		Console* console;
+		
 		Sprite LoadSprite(std::string SpriteAssetFileName);
 		EBackColor AtoBackColor(char c);
 		Sprite buttonSpriteOff;

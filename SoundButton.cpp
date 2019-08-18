@@ -14,6 +14,12 @@ SoundButton::SoundButton(SoundManager* _soundManager, Note::Notes _note, int oct
 	sound = new Note(_note, octave);
 }
 
+SoundButton::~SoundButton()
+{
+	if (sound != nullptr)
+		delete sound;
+}
+
 void SoundButton::Action() {
 	soundManager->PlayNote(sound);
 }
@@ -21,6 +27,10 @@ void SoundButton::Action() {
 bool SoundButton::isButtonPressed()
 {
 #if defined (__AVR__) || (__avr__)
+#if defined ARDUINO_DEBUG
+	String tempString = "Button Pressed | " + sound->ToString(); + " | Pin X = " + (String)xPin + " | Pin Y = " + (String)yPin;
+	Serial.println(tempString);
+#endif
 	return DigitalRead(xPin) && DigitalRead(yPin);
 #else
 	return LaunchpadButton::isButtonPressed();

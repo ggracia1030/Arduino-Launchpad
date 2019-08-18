@@ -10,6 +10,8 @@ public:
 
 	SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char _keyboard);
 	SoundButton(SoundManager* _soundManager, Note::Notes _note, int octave, char _keyboard);
+	~SoundButton();
+
 	Note* GetSound() { return sound; }
 	void Action();
 	bool isButtonPressed();
