@@ -47,7 +47,7 @@ class LaunchpadManager {
 		Sprite buttonSpriteOn;
 
 		const int PIXEL_SIZE_X = 16;
-		const int PIXEL_SIZE_Y = 4;
+		const int PIXEL_SIZE_Y = 5;
 
 		std::string logString[2];
 #endif

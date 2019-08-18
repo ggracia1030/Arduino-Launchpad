@@ -59,9 +59,11 @@ const char LaunchpadManager::KeyboardBtnToChar(KeyboardButtons btn) {
 	return temp;
 }
 
-LaunchpadManager::LaunchpadManager(int _length) {
+
+
+LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
 	length = _length;
-	soundButtons = new SoundButton**[length];
+	soundButtons = new SoundButton** [length];
 
 #if !defined (__AVR__) && !defined (__avr__)
 	console = new Console();
@@ -77,14 +79,37 @@ LaunchpadManager::LaunchpadManager(int _length) {
 
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
-			soundButtons[x][y] = new SoundButton(soundManager, x, y, KeyboardBtnToChar((LaunchpadManager::KeyboardButtons)(y*length + x)));
-			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)x, y+3);
+			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + length + y, KeyboardBtnToChar((LaunchpadManager::KeyboardButtons)(y * length + x)));
+			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + length * y) % 12), (x + length * y) / 12 + 4);
 		}
 	}
 }
 
-LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
-	
+LaunchpadManager::LaunchpadManager(int _length) {
+
+	int _firstPin = 20;
+
+	length = _length;
+	soundButtons = new SoundButton * *[length];
+
+#if !defined (__AVR__) && !defined (__avr__)
+	console = new Console();
+	soundManager = new SoundManager(4000000, 3, console);
+	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
+	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
+#else
+	soundManager = new SoundManager(4000000, 3);
+#endif
+	for (int i = 0; i < length; i++) {
+		soundButtons[i] = new SoundButton * [length];
+	}
+
+	for (int y = 0; y < length; y++) {
+		for (int x = 0; x < length; x++) {
+			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + length + y, KeyboardBtnToChar((LaunchpadManager::KeyboardButtons)(y * length + x)));
+			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + length * y) % 12), (x + length * y) / 12 + 4);
+		}
+	}
 }
 
 LaunchpadButton* LaunchpadManager::GetButton(int _x, int _y) {
@@ -131,6 +156,10 @@ void LaunchpadManager::Render()
 
 			tempString = "Value: " + std::to_string(soundManager->GetNoteValue(soundButtons[x][y]->GetSound()->GetFrequency()));
 			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
+
+			tempString = "Pins: [" + std::to_string(soundButtons[x][y]->GetXPin()) + "," +
+				std::to_string(soundButtons[x][y]->GetYPin()) + "]";
+			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 3, tempString, EForeColor::White);
 		}
 	}
 

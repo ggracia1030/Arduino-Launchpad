@@ -16,6 +16,9 @@ public:
 	void Action();
 	bool isButtonPressed();
 
+	const int GetXPin() { return xPin; }
+	const int GetYPin() { return yPin; }
+
 private:
 	Note* sound;
 	int xPin, yPin;

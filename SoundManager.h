@@ -16,8 +16,8 @@ public:
 
 	void PlayNote(int noteFreq);
 	void PlayNote(Note* _note);
-	const short GetNoteValue(int noteFreq);
-	const short GetNoteValue(Note* note);
+	const uint16_t GetNoteValue(int noteFreq);
+	const uint16_t GetNoteValue(Note* note);
 
 	const bool isChannelFree(int _channel);
 	const int GetFirstFreeChannel();
@@ -31,7 +31,7 @@ private:
 
 	int oscillatorFreq;
 
-	void SendNoteValue(short noteValue);
+	void SendNoteValue(uint16_t noteValue);
 
 #if !defined (__AVR__) && !defined (__avr__)
 	Console* console;

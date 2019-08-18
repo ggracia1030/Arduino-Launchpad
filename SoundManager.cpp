@@ -40,20 +40,18 @@ SoundManager::~SoundManager()
 	}
 }
 
-void SoundManager::SendNoteValue(short noteValue)
+void SoundManager::SendNoteValue(uint16_t noteValue)
 {
 #if defined (__AVR__) || (__avr__)
 	//Lo que tenga que hacer con el chip
 #else
 	
-	//std::cout << " | Note Value: " << noteValue << std::endl;
 #endif
 }
 
 void SoundManager::PlayNote(int noteFreq)
 {
 #if !defined (__AVR__) && !defined (__avr__)
-	//std::cout << "Playing Note with freq: " << noteFreq << std::endl;
 	Beep(noteFreq, 100);
 #endif 
 
@@ -63,18 +61,17 @@ void SoundManager::PlayNote(int noteFreq)
 void SoundManager::PlayNote(Note* _note)
 {
 #if !defined (__AVR__) && !defined (__avr__)
-	//std::cout << "Playing Note with freq: " << _note->GetFrequency() << std::endl;
 	Beep(_note->GetFrequency(), 100);
 #endif 
 	SendNoteValue(GetNoteValue(_note));
 }
 
-const short SoundManager::GetNoteValue(int noteFreq)
+const uint16_t SoundManager::GetNoteValue(int noteFreq)
 {
-	return (short)((float)oscillatorFreq / (float)(2 * 16 * noteFreq));
+	return (uint16_t)((float)oscillatorFreq / (float)(2 * 16 * noteFreq));
 }
 
-const short SoundManager::GetNoteValue(Note* note)
+const uint16_t SoundManager::GetNoteValue(Note* note)
 {
 	return GetNoteValue(note->GetFrequency());
 }
