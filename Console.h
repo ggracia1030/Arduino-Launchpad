@@ -126,6 +126,8 @@ private:
 	friend class Text;
 	friend class ImageRenderer;
 	friend class LaunchpadManager;
+	friend class SoundManager;
+	friend class Component;
 
 	~Console();
 	Console();

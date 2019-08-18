@@ -8,6 +8,7 @@
 #if !defined (__AVR__) && !defined (__avr__)
 #include <fstream>
 #include "Console.h"
+#include <string>
 #endif
 
 class LaunchpadManager {
@@ -37,6 +38,8 @@ class LaunchpadManager {
 		SoundManager* soundManager;
         int length;
 #if !defined (__AVR__) && !defined (__avr__)
+		friend class SoundManager;
+
 		Console* console;
 		Sprite LoadSprite(std::string SpriteAssetFileName);
 		EBackColor AtoBackColor(char c);
@@ -45,6 +48,8 @@ class LaunchpadManager {
 
 		const int PIXEL_SIZE_X = 16;
 		const int PIXEL_SIZE_Y = 4;
+
+		std::string logString[2];
 #endif
 };
 

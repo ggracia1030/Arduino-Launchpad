@@ -25,3 +25,4 @@ bool LaunchpadButton::isButtonPressed() {
 void LaunchpadButton::Action()
 {
 }
+

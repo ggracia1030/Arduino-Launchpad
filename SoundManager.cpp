@@ -15,10 +15,27 @@ SoundManager::SoundManager(long _oscillatorFreq, int _channels)
 	}
 	volume = 0;
 	release = 0;
+	
 }
+#if !defined (__AVR__) && !defined (__avr__)
+SoundManager::SoundManager(long _oscillatorFreq, int _channels, Console* _console)
+{
+	oscillatorFreq = _oscillatorFreq;
+	channelsLength = _channels;
+	channels = new bool* [channelsLength];
+	for (int i = 0; i < channelsLength; i++) {
+		channels[i] = new bool;
+		*(channels[i]) = true;
+	}
+	volume = 0;
+	release = 0;
 
+	console = _console;
+}
+#endif
 SoundManager::~SoundManager()
 {
+
 }
 
 void SoundManager::SendNoteValue(short noteValue)
@@ -26,6 +43,7 @@ void SoundManager::SendNoteValue(short noteValue)
 #if defined (__AVR__) || (__avr__)
 	//Lo que tenga que hacer con el chip
 #else
+	
 	//std::cout << " | Note Value: " << noteValue << std::endl;
 #endif
 }

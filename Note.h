@@ -1,6 +1,11 @@
 #ifndef NOTE_H
 #define NOTE_H
 
+#if !defined (__AVR__) && !defined (__avr__)
+#include <iostream>
+#include <string>
+#endif
+
 class Note {
 
     public:
@@ -32,6 +37,9 @@ class Note {
         int GetFrequency() {
             return frequency;
         }
+#if !defined (__AVR__) && !defined (__avr__)
+		std::string ToString();
+#endif
         
     private:
         Notes note;

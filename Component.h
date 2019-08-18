@@ -5,6 +5,7 @@
 #else
 #include <iostream>
 #include <string.h>
+#include "Console.h"
 #endif
 
 class Component
@@ -19,6 +20,7 @@ public:
 	int GetPin() { return pin; }
 	void SetPin(unsigned int value);
 
+	bool DigitalRead(int _pin);
 	bool DigitalRead();
 	void DigitalWrite(bool value);
 	int AnalogRead();

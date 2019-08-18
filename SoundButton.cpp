@@ -21,8 +21,9 @@ void SoundButton::Action() {
 bool SoundButton::isButtonPressed()
 {
 #if defined (__AVR__) || (__avr__)
-	return digitalRead(xPin) == HIGH && digitalRead(yPin) == HIGH;
+	return DigitalRead(xPin) && DigitalRead(yPin);
 #else
 	return LaunchpadButton::isButtonPressed();
 #endif
 }
+

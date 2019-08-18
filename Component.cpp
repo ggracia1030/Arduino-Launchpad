@@ -33,7 +33,7 @@ void Component::SetPin(unsigned int value)
 	pin = value;
 }
 
-bool Component::DigitalRead()
+bool Component::DigitalRead(int _pin)
 {
 #if defined(__AVR__) || (__avr__)
 	return (digitalRead(pin) == HIGH);
@@ -42,6 +42,11 @@ bool Component::DigitalRead()
 	std::cout << "Digital Read of component " + componentName + " in pin : " << pin << std::endl;
 	return 0;
 #endif
+}
+
+bool Component::DigitalRead()
+{
+	return (Component::DigitalRead(pin));
 }
 
 void Component::DigitalWrite(bool value)

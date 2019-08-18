@@ -61,12 +61,15 @@ const char LaunchpadManager::KeyboardBtnToChar(KeyboardButtons btn) {
 
 LaunchpadManager::LaunchpadManager(int _length) {
 	length = _length;
-	soundManager = new SoundManager(4000000, 3);
 	soundButtons = new SoundButton**[length];
+
 #if !defined (__AVR__) && !defined (__avr__)
 	console = new Console();
+	soundManager = new SoundManager(4000000, 3, console);
 	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
 	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
+#else
+	soundManager = new SoundManager(4000000, 3);
 #endif
 	for (int i = 0; i < length; i++) {
 		soundButtons[i] = new SoundButton * [length];
@@ -111,7 +114,7 @@ void LaunchpadManager::Render()
 {
 #if !defined (__AVR__) && !defined (__avr__)
 	console->CleanBuffers();
-
+	std::string tempString = "";
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if (soundButtons[x][y]->isButtonPressed()) {
@@ -120,8 +123,17 @@ void LaunchpadManager::Render()
 			else {
 				console->WriteSpriteBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y, buttonSpriteOff);
 			}
+			tempString = "Note: " + soundButtons[x][y]->GetSound()->ToString();
+			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y, tempString, EForeColor::White);
+
+			tempString = "Freq: " + std::to_string(soundButtons[x][y]->GetSound()->GetFrequency());
+			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 1, tempString, EForeColor::White);
+
+			tempString = "Value: " + std::to_string(soundManager->GetNoteValue(soundButtons[x][y]->GetSound()->GetFrequency()));
+			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
 		}
 	}
+
 
 	console->RenderBuffers();
 #endif
@@ -135,8 +147,11 @@ LaunchpadManager::~LaunchpadManager() {
 			}
 			delete soundButtons[y];
 		}
+		delete[] soundButtons;
 	}
-	delete[] soundButtons;
+
+	if(soundManager)
+		delete soundManager;
 }
 
 #if !defined (__AVR__) && !defined (__avr__)
