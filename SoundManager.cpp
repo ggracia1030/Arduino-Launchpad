@@ -4,7 +4,7 @@
 #include <Windows.h>
 #endif
 
-SoundManager::SoundManager(unsigned int _oscillatorFreq, int _channels)
+SoundManager::SoundManager(long _oscillatorFreq, int _channels)
 {
 	oscillatorFreq = _oscillatorFreq;
 	channelsLength = _channels;

@@ -3,7 +3,7 @@
 class SoundManager
 {
 public:
-	SoundManager(unsigned int _oscillatorFreq, int _channels);
+	SoundManager(long _oscillatorFreq, int _channels);
 	~SoundManager();
 
 	void PlayNote(int noteFreq);
@@ -21,7 +21,7 @@ private:
 	int volume;
 	int release;
 
-	unsigned int oscillatorFreq;
+	int oscillatorFreq;
 
 	void SendNoteValue(short noteValue);
 };
