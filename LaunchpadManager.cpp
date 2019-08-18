@@ -109,6 +109,7 @@ void LaunchpadManager::UpdateInput() {
 
 void LaunchpadManager::Render()
 {
+#ifndef __AVR__ && __avr__
 	console->CleanBuffers();
 
 	for (int y = 0; y < length; y++) {
@@ -123,6 +124,7 @@ void LaunchpadManager::Render()
 	}
 
 	console->RenderBuffers();
+#endif
 }
 
 LaunchpadManager::~LaunchpadManager() {
