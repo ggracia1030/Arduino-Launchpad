@@ -6,7 +6,7 @@
 #include "SoundManager.h"
 
 #if defined(__AVR__) || (__avr__)
-#include "WString.h"
+#include <WString.h>
 #endif
 
 
