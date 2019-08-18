@@ -6,6 +6,8 @@
 #include <string>
 #else
 #include "Arduino.h"
+#include <String.h>
+#include <WString.h>
 #endif
 
 class Note {
