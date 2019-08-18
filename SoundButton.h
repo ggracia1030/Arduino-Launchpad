@@ -5,11 +5,6 @@
 #include "Note.h"
 #include "SoundManager.h"
 
-#include "Arduino.h"
-#if defined(__AVR__) || (__avr__)
-#endif
-
-
 class SoundButton : public LaunchpadButton {
 public:
 

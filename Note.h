@@ -4,6 +4,8 @@
 #if !defined (__AVR__) && !defined (__avr__)
 #include <iostream>
 #include <string>
+#else
+#include "Arduino.h"
 #endif
 
 class Note {
