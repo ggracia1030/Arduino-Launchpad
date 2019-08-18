@@ -5,6 +5,10 @@
 #include "SoundButton.h"
 #include "SoundManager.h"
 #include "Note.h"
+#ifndef __AVR__ && __avr__
+#include <fstream>
+#include "Console.h"
+#endif
 
 class LaunchpadManager {
 
@@ -28,9 +32,20 @@ class LaunchpadManager {
     
     private:
 		void UpdateInput();
+		void Render();
 		SoundButton*** soundButtons;
 		SoundManager* soundManager;
         int length;
+#ifndef __AVR__ && __avr__
+		Console* console;
+		Sprite LoadSprite(std::string SpriteAssetFileName);
+		EBackColor AtoBackColor(char c);
+		Sprite buttonSpriteOff;
+		Sprite buttonSpriteOn;
+
+		const int PIXEL_SIZE_X = 16;
+		const int PIXEL_SIZE_Y = 4;
+#endif
 };
 
 #endif
