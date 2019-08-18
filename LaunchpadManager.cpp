@@ -92,14 +92,13 @@ void LaunchpadManager::UpdateInput() {
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if (soundButtons[x][y]->isButtonPressed()) {
-#ifndef __AVR__ && avr
+#ifndef __AVR__ && __avr__
 				std::cout << "\nButton: " << KeyboardBtnToChar((LaunchpadManager::KeyboardButtons)(y * length + x)) << " CLICK!" << std::endl;
 #endif
 				soundButtons[x][y]->Action();
 			}
 		}
 	}
-
 }
 
 LaunchpadManager::~LaunchpadManager() {

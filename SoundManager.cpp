@@ -1,6 +1,7 @@
 #include "SoundManager.h"
 #ifndef __AVR__ && __avr__
 #include <iostream>
+#include <Windows.h>
 #endif
 
 SoundManager::SoundManager(int _oscillatorFreq, int _channels)
@@ -33,6 +34,7 @@ void SoundManager::PlayNote(int noteFreq)
 {
 #ifndef __AVR__ && __avr__
 	std::cout << "Playing Note with freq: " << noteFreq << std::endl;
+	Beep(noteFreq, 100);
 #endif 
 
 	SendNoteValue(GetNoteValue(noteFreq));
@@ -42,6 +44,7 @@ void SoundManager::PlayNote(Note* _note)
 {
 #ifndef __AVR__ && __avr__
 	std::cout << "Playing Note with freq: " << _note->GetFrequency() << std::endl;
+	Beep(_note->GetFrequency(), 100);
 #endif 
 	SendNoteValue(GetNoteValue(_note));
 }
