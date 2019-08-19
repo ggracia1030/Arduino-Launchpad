@@ -14,12 +14,33 @@ LaunchpadButton::~LaunchpadButton() {
 
 }
 
-bool LaunchpadButton::isButtonPressed() {
+bool LaunchpadButton::GetButton()
+{
+	return currentState;
+}
+
+bool LaunchpadButton::GetButtonDown()
+{
+	return currentState && !lastState;
+}
+
+bool LaunchpadButton::GetButtonUp()
+{
+	return !currentState && lastState;
+}
+
+bool LaunchpadButton::isButtonPressed()
+{
 #if defined (__AVR__) || (__avr__)
 	return DigitalRead();
 #else
 	return Input::GetKey(keyboard);
 #endif
+}
+
+void LaunchpadButton::Update() {
+	lastState = currentState;
+	currentState = isButtonPressed();
 }
 
 void LaunchpadButton::Action()

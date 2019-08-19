@@ -14,10 +14,12 @@ public:
 
 	Note* GetSound() { return sound; }
 	void Action();
-	bool isButtonPressed();
 
 	const int GetXPin() { return xPin; }
 	const int GetYPin() { return yPin; }
+
+protected:
+	bool isButtonPressed();
 
 private:
 	Note* sound;

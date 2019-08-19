@@ -1,71 +1,9 @@
 #include "LaunchpadManager.h"
 
-const char LaunchpadManager::KeyboardBtnToChar(KeyboardButtons btn) {
-	char temp = ' ';
-	switch (btn) {
-	case One:
-		temp = '1';
-		break;
-	case Two:
-		temp = '2';
-		break;
-	case Three:
-		temp = '3';
-		break;
-	case Four:
-		temp = '4';
-		break;
-
-	case Q:
-		temp = 'Q';
-		break;
-	case W:
-		temp = 'W';
-		break;
-	case E:
-		temp = 'E';
-		break;
-	case R:
-		temp = 'R';
-		break;
-
-	case A:
-		temp = 'A';
-		break;
-	case S:
-		temp = 'S';
-		break;
-	case D:
-		temp = 'D';
-		break;
-	case F:
-		temp = 'F';
-		break;
-
-	case Z:
-		temp = 'Z';
-		break;
-	case X:
-		temp = 'X';
-		break;
-	case C:
-		temp = 'C';
-		break;
-	case V:
-		temp = 'V';
-		break;
-	}
-
-	return temp;
-}
-
-
-
 LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
 	length = _length;
 	lcdScreen = new LCDScreen();
-	soundButtons = new SoundButton** [length];
-
+	
 #if !defined (__AVR__) && !defined (__avr__)
 	console = new Console();
 	soundManager = new SoundManager(4000000, 3, console);
@@ -75,67 +13,40 @@ LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
 #else
 	soundManager = new SoundManager(4000000, 3);
 #endif
-	for (int i = 0; i < length; i++) {
-		soundButtons[i] = new SoundButton * [length];
-	}
-
-	for (int y = 0; y < length; y++) {
-		for (int x = 0; x < length; x++) {
-			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + length + y, KeyboardBtnToChar((LaunchpadManager::KeyboardButtons)(y * length + x)));
-			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + length * y) % 12), (x + length * y) / 12 + 4);
-		}
-	}
-}
-
-LaunchpadManager::LaunchpadManager(int _length) {
-
-	int _firstPin = 20;
-	lcdScreen = new LCDScreen();
-	length = _length;
-	soundButtons = new SoundButton * *[length];
-
-#if !defined (__AVR__) && !defined (__avr__)
-	console = new Console();
-	soundManager = new SoundManager(4000000, 3, console);
-	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
-	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
-	lcdScreenSprite = LoadSprite("src/sprites/lcdScreen.txt");
-#else
-	soundManager = new SoundManager(4000000, 3);
-#endif
-	for (int i = 0; i < length; i++) {
-		soundButtons[i] = new SoundButton * [length];
-	}
-
-	for (int y = 0; y < length; y++) {
-		for (int x = 0; x < length; x++) {
-			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + length + y, KeyboardBtnToChar((LaunchpadManager::KeyboardButtons)(y * length + x)));
-			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + length * y) % 12), (x + length * y) / 12 + 4);
-		}
-	}
-}
-
-LaunchpadButton* LaunchpadManager::GetButton(int _x, int _y) {
-    return soundButtons[_x][_y];
+	inputManager = new InputManager(_firstPin, _length, soundManager);
 }
 
 void LaunchpadManager::Update() {
+	inputManager->EarlyUpdate();
+
 	UpdateInput();
 #if !defined (__AVR__) && !defined (__avr__)
 	Render();
 #endif
+
+	
 }
 
 void LaunchpadManager::UpdateInput() {
+#if defined (__AVR__) || defined(__avr__)
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
-			if (soundButtons[x][y]->isButtonPressed()) {
-				soundButtons[x][y]->Action();
+			if (inputManager->GetSoundButton(x, y)->GetButton()) {
+				inputManager->GetSoundButton(x, y)->Action();
 			}
 		}
 	}
 }
-/******/
+#else
+	for (int y = 0; y < length; y++) {
+		for (int x = 0; x < length; x++) {
+			if(inputManager->GetSoundButton(x, y)->GetButtonDown()) {
+				inputManager->GetSoundButton(x, y)->Action();
+			}
+		}
+	}
+#endif
+}
 
 
 void LaunchpadManager::Render()
@@ -145,23 +56,23 @@ void LaunchpadManager::Render()
 	std::string tempString = "";
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
-			if (soundButtons[x][y]->isButtonPressed()) {
+			if (inputManager->GetSoundButton(x, y)->GetButton()) {
 				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSpriteOn);
 			}
 			else {
 				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSpriteOff);
 			}
-			tempString = "Note: " + soundButtons[x][y]->GetSound()->ToString();
+			tempString = "Note: " + inputManager->GetSoundButton(x, y)->GetSound()->ToString();
 			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, tempString, EForeColor::White);
 
-			tempString = "Freq: " + std::to_string(soundButtons[x][y]->GetSound()->GetFrequency());
+			tempString = "Freq: " + std::to_string(inputManager->GetSoundButton(x, y)->GetSound()->GetFrequency());
 			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y +  y * PIXEL_SIZE_Y + 1, tempString, EForeColor::White);
 
-			tempString = "Value: " + std::to_string(soundManager->GetNoteValue(soundButtons[x][y]->GetSound()->GetFrequency()));
+			tempString = "Value: " + std::to_string(soundManager->GetNoteValue(inputManager->GetSoundButton(x, y)->GetSound()->GetFrequency()));
 			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
 
-			tempString = "Pins: [" + std::to_string(soundButtons[x][y]->GetXPin()) + "," +
-				std::to_string(soundButtons[x][y]->GetYPin()) + "]";
+			tempString = "Pins: [" + std::to_string(inputManager->GetSoundButton(x, y)->GetXPin()) + "," +
+				std::to_string(inputManager->GetSoundButton(x, y)->GetYPin()) + "]";
 			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 3, tempString, EForeColor::White);
 		}
 	}
@@ -176,15 +87,8 @@ void LaunchpadManager::Render()
 }
 
 LaunchpadManager::~LaunchpadManager() {
-	if (soundButtons != nullptr) {
-		for (int y = 0; y < length; y++) {
-			for (int x = 0; x < length; x++) {
-				delete soundButtons[x][y];
-			}
-		}
-		if (soundButtons != nullptr)
-			delete[] soundButtons;
-	}
+	if (inputManager != nullptr) 
+		delete inputManager;
 
 	if(soundManager != nullptr)
 		delete soundManager;

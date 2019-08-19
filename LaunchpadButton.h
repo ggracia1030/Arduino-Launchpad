@@ -14,11 +14,21 @@ public:
 	LaunchpadButton(unsigned int _pin, PinMode pinMode, char _keyboard);
     ~LaunchpadButton();
 
-	virtual bool isButtonPressed();
+	//virtual bool isButtonPressed();
+
+	bool GetButton();
+	bool GetButtonDown();
+	bool GetButtonUp();
+
 	virtual void Action();
 protected:
-	
+	friend class InputManager;
 	char keyboard;
+	bool lastState, currentState;
+
+	virtual bool isButtonPressed();
+
+	void Update();
 };
 
 #endif
