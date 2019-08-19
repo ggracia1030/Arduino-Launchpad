@@ -1,6 +1,5 @@
 #include "LCDScreen.h"
 
-#if !defined (__AVR__) && !defined (__avr__)
 LCDScreen::LCDScreen() : Component::Component()
 {
 	lcdString[0] = "  ---";
@@ -14,6 +13,8 @@ LCDScreen::LCDScreen(int pin, PinMode _pinMode) : Component::Component(pin, _pin
 LCDScreen::~LCDScreen()
 {
 }
+
+#if !defined (__AVR__) && !defined (__avr__)
 void LCDScreen::SetLCDString(std::string msg, int row)
 {
 	if (row < 0) row = 0;
