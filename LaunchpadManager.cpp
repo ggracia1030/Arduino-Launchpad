@@ -28,7 +28,7 @@ void LaunchpadManager::Update() {
 }
 
 void LaunchpadManager::UpdateInput() {
-#if defined (__AVR__) || defined(__avr__)
+#if defined (__AVR__) || defined (__avr__)
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if (inputManager->GetSoundButton(x, y)->GetButton()) {
@@ -36,7 +36,7 @@ void LaunchpadManager::UpdateInput() {
 			}
 		}
 	}
-}
+
 #else
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
