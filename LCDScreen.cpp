@@ -32,7 +32,7 @@ void LCDScreen::SetLCDString(String msg, int row)
 {
 	if (row < 0) row = 0;
 	else if (row > 1) row = 1;
-	if (msg.size() > 16) {//16 is max value of chars in a row of the LCD screen
+	if (msg.length() > 16) {//16 is max value of chars in a row of the LCD screen
 		String temp = "";
 		for (int i = 0; i < 16; i++) {
 			temp += msg[i];
