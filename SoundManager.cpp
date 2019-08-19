@@ -1,4 +1,5 @@
 #include "SoundManager.h"
+#include "LaunchpadManager.h"
 #if !defined (__AVR__) && !defined (__avr__)
 #include <iostream>
 #include <Windows.h>
@@ -31,6 +32,11 @@ SoundManager::SoundManager(long _oscillatorFreq, int _channels, Console* _consol
 	release = 0;
 
 	console = _console;
+}
+#else
+void SoundManager::SetLCDText(String msg, int row)
+{
+	manager->SetLCDString(msg, row);
 }
 #endif
 SoundManager::~SoundManager()

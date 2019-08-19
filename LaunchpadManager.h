@@ -1,10 +1,11 @@
 #ifndef LAUNCHPAD_MANAGER_H
 #define LAUNCHPAD_MANAGER_H
 
-//#include "LaunchpadButton.h"
+#include "LaunchpadButton.h"
 #include "SoundButton.h"
 #include "SoundManager.h"
 #include "Note.h"
+#include "LCDScreen.h"
 #if !defined (__AVR__) && !defined (__avr__)
 #include <fstream>
 #include "Console.h"
@@ -28,14 +29,17 @@ class LaunchpadManager {
 		const char KeyboardBtnToChar(KeyboardButtons btn);
 
         void Update();
-        int GetButtonsLength() { return length; }
+		int GetButtonsLength() { return length; };
         LaunchpadButton* GetButton(int _x, int _y);
-    
+
     private:
 		void UpdateInput();
 		void Render();
-		SoundButton*** soundButtons;
-		SoundManager* soundManager;
+
+		SoundButton ***soundButtons;
+		SoundManager*soundManager;
+		LCDScreen* lcdScreen;
+
         int length;
 #if !defined (__AVR__) && !defined (__avr__)
 		friend class SoundManager;
@@ -45,11 +49,12 @@ class LaunchpadManager {
 		EBackColor AtoBackColor(char c);
 		Sprite buttonSpriteOff;
 		Sprite buttonSpriteOn;
+		Sprite lcdScreenSprite;
 
 		const int PIXEL_SIZE_X = 16;
 		const int PIXEL_SIZE_Y = 5;
-
-		std::string logString[2];
+		const int BUTTONS_MATRIX_OFFSET_X = 3;
+		const int BUTTONS_MATRIX_OFFSET_Y = 6;
 #endif
 };
 

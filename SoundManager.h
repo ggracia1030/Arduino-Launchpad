@@ -3,11 +3,14 @@
 
 #if !defined (__AVR__) && !defined (__avr__)
 #include "Console.h"
+#include <string>
 #endif
 
 class SoundManager
 {
+	
 public:
+	
 	SoundManager(long _oscillatorFreq, int _channels);
 #if !defined (__AVR__) && !defined (__avr__)
 	SoundManager(long _oscillatorFreq, int _channels, Console* _console);
@@ -21,6 +24,8 @@ public:
 
 	const bool isChannelFree(int _channel);
 	const int GetFirstFreeChannel();
+
+
 
 private:
 	bool** channels;

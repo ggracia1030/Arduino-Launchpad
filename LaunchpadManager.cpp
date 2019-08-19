@@ -63,6 +63,7 @@ const char LaunchpadManager::KeyboardBtnToChar(KeyboardButtons btn) {
 
 LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
 	length = _length;
+	lcdScreen = new LCDScreen();
 	soundButtons = new SoundButton** [length];
 
 #if !defined (__AVR__) && !defined (__avr__)
@@ -70,6 +71,7 @@ LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
 	soundManager = new SoundManager(4000000, 3, console);
 	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
 	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
+	lcdScreenSprite = LoadSprite("src/sprites/lcdScreen.txt");
 #else
 	soundManager = new SoundManager(4000000, 3);
 #endif
@@ -88,7 +90,7 @@ LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
 LaunchpadManager::LaunchpadManager(int _length) {
 
 	int _firstPin = 20;
-
+	lcdScreen = new LCDScreen();
 	length = _length;
 	soundButtons = new SoundButton * *[length];
 
@@ -97,6 +99,7 @@ LaunchpadManager::LaunchpadManager(int _length) {
 	soundManager = new SoundManager(4000000, 3, console);
 	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
 	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
+	lcdScreenSprite = LoadSprite("src/sprites/lcdScreen.txt");
 #else
 	soundManager = new SoundManager(4000000, 3);
 #endif
@@ -143,24 +146,28 @@ void LaunchpadManager::Render()
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if (soundButtons[x][y]->isButtonPressed()) {
-				console->WriteSpriteBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y, buttonSpriteOn);
+				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSpriteOn);
 			}
 			else {
-				console->WriteSpriteBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y, buttonSpriteOff);
+				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSpriteOff);
 			}
 			tempString = "Note: " + soundButtons[x][y]->GetSound()->ToString();
-			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y, tempString, EForeColor::White);
+			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, tempString, EForeColor::White);
 
 			tempString = "Freq: " + std::to_string(soundButtons[x][y]->GetSound()->GetFrequency());
-			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 1, tempString, EForeColor::White);
+			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y +  y * PIXEL_SIZE_Y + 1, tempString, EForeColor::White);
 
 			tempString = "Value: " + std::to_string(soundManager->GetNoteValue(soundButtons[x][y]->GetSound()->GetFrequency()));
-			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
+			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
 
 			tempString = "Pins: [" + std::to_string(soundButtons[x][y]->GetXPin()) + "," +
 				std::to_string(soundButtons[x][y]->GetYPin()) + "]";
-			console->WriteStringBuffer(x * PIXEL_SIZE_X, y * PIXEL_SIZE_Y + 3, tempString, EForeColor::White);
+			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 3, tempString, EForeColor::White);
 		}
+	}
+	console->WriteSpriteBuffer(3, 1, lcdScreenSprite);
+	for (int i = 0; i < 2; i++) {
+		console->WriteStringBuffer(4, 2 + i, lcdScreen->GetString(i), EForeColor::White);
 	}
 
 
