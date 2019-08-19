@@ -13,7 +13,6 @@ public:
 	};
 
 	InputManager(int _firstPin, int _soundButtonsLength, SoundManager* soundManager);
-
 	~InputManager();
 
 	SoundButton* GetSoundButton(int posX, int posY);
@@ -25,6 +24,9 @@ private:
 	void EarlyUpdate();
 
 	SoundButton*** soundButtons;
+	LaunchpadButton* acceptButton;
+	LaunchpadButton* cancelButton;
+
 	int soundButtonsLength;
 };
 
