@@ -5,6 +5,12 @@ SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char
 	soundManager = _soundManager;
 	xPin = _xPin;
 	yPin = _yPin;
+
+#if defined (__AVR__) || defined (__avr__)
+	pinMode(_xPin, INPUT);
+	pinMode(_yPin, INPUT);
+#endif
+
 	sound = new Note();
 }
 

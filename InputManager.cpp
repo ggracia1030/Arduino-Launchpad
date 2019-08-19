@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-InputManager::InputManager(int _firstPin, int _soundButtonsLength, SoundManager* soundManager)
+InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager)
 {
 	soundButtonsLength = _soundButtonsLength;
 
@@ -15,6 +15,9 @@ InputManager::InputManager(int _firstPin, int _soundButtonsLength, SoundManager*
 			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 4);
 		}
 	}
+
+	acceptButton = new LaunchpadButton(_acceptBtnPin, Component::PinMode::_INPUT_, 'U');
+	cancelButton = new LaunchpadButton(_cancelBtnPin, Component::PinMode::_INPUT_, 'I');
 }
 
 InputManager::~InputManager()
@@ -37,6 +40,8 @@ void InputManager::EarlyUpdate()
 			soundButtons[x][y]->Update();
 		}
 	}
+	acceptButton->Update();
+	cancelButton->Update();
 }
 
 SoundButton* InputManager::GetSoundButton(int posX, int posY)

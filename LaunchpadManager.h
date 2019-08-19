@@ -14,7 +14,7 @@
 class LaunchpadManager {
 
     public:
-		LaunchpadManager(int _length, int _firstPin);
+		LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin);
         ~LaunchpadManager();
 		
 
@@ -36,9 +36,12 @@ class LaunchpadManager {
 		
 		Sprite LoadSprite(std::string SpriteAssetFileName);
 		EBackColor AtoBackColor(char c);
-		Sprite buttonSpriteOff;
-		Sprite buttonSpriteOn;
+
+		Sprite buttonPushSprite;
+		Sprite buttonSoundSprite;
+		Sprite buttonCancelSprite, buttonAcceptSprite;
 		Sprite lcdScreenSprite;
+		Sprite buttonSmall;
 
 		const int PIXEL_SIZE_X = 16;
 		const int PIXEL_SIZE_Y = 5;

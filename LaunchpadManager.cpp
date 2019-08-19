@@ -1,19 +1,24 @@
 #include "LaunchpadManager.h"
 
-LaunchpadManager::LaunchpadManager(int _length, int _firstPin) {
+LaunchpadManager::LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin) {
 	length = _length;
 	lcdScreen = new LCDScreen();
 	
 #if !defined (__AVR__) && !defined (__avr__)
 	console = new Console();
 	soundManager = new SoundManager(4000000, 3, console);
-	buttonSpriteOff = LoadSprite("src/sprites/buttonOff.txt");
-	buttonSpriteOn = LoadSprite("src/sprites/buttonOn.txt");
+
+	buttonPushSprite = LoadSprite("src/sprites/buttonPush.txt");
+	buttonAcceptSprite = LoadSprite("src/sprites/buttonAccept.txt");
+	buttonCancelSprite = LoadSprite("src/sprites/buttonCancel.txt");
+	buttonSoundSprite = LoadSprite("src/sprites/buttonSound.txt");
+	buttonSmall = LoadSprite("src/sprites/smallButton.txt");
 	lcdScreenSprite = LoadSprite("src/sprites/lcdScreen.txt");
 #else
 	soundManager = new SoundManager(4000000, 3);
 #endif
-	inputManager = new InputManager(_firstPin, _length, soundManager);
+
+	inputManager = new InputManager(_firstPin, _acceptBtnPin, _cancelBtnPin, _length, soundManager);
 }
 
 void LaunchpadManager::Update() {
@@ -57,10 +62,10 @@ void LaunchpadManager::Render()
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if (inputManager->GetSoundButton(x, y)->GetButton()) {
-				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSpriteOn);
+				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonPushSprite);
 			}
 			else {
-				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSpriteOff);
+				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSoundSprite);
 			}
 			tempString = "Note: " + inputManager->GetSoundButton(x, y)->GetSound()->ToString();
 			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, tempString, EForeColor::White);
@@ -81,6 +86,24 @@ void LaunchpadManager::Render()
 		console->WriteStringBuffer(4, 2 + i, lcdScreen->GetString(i), EForeColor::White);
 	}
 
+	if (inputManager->GetAcceptButton()->GetButton()) {
+		console->WriteSpriteBuffer(25, 1, buttonAcceptSprite);
+	}
+	else {
+		console->WriteSpriteBuffer(25, 1, buttonSmall);
+	}
+	
+	if (inputManager->GetCancelButton()->GetButton()) {
+		console->WriteSpriteBuffer(35, 1, buttonCancelSprite);
+	}
+	else {
+		console->WriteSpriteBuffer(35, 1, buttonSmall);
+	}
+
+	tempString = " Accept";
+	console->WriteStringBuffer(25, 2, tempString, EForeColor::White);
+	tempString = " Cancel";
+	console->WriteStringBuffer(35, 2, tempString, EForeColor::White);
 
 	console->RenderBuffers();
 #endif
