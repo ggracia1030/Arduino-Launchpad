@@ -7,8 +7,8 @@ SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char
 	yPin = _yPin;
 
 #if defined (__AVR__) || defined (__avr__)
-	pinMode(_xPin, INPUT);
-	pinMode(_yPin, INPUT);
+	pinMode(_xPin, INPUT_PULLUP);
+	pinMode(_yPin, INPUT_PULLUP);
 #endif
 
 	sound = new Note();

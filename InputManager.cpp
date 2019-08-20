@@ -16,8 +16,8 @@ InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, 
 		}
 	}
 
-	acceptButton = new LaunchpadButton(_acceptBtnPin, Component::PinMode::_INPUT_, 'U');
-	cancelButton = new LaunchpadButton(_cancelBtnPin, Component::PinMode::_INPUT_, 'I');
+	acceptButton = new LaunchpadButton(_acceptBtnPin, Component::PinMode::_INPUT_PULLUP_, 'U');
+	cancelButton = new LaunchpadButton(_cancelBtnPin, Component::PinMode::_INPUT_PULLUP_, 'I');
 }
 
 InputManager::~InputManager()
