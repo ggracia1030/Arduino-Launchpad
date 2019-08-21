@@ -64,11 +64,13 @@ void SoundManager::PlayNote(int noteFreq)
 
 void SoundManager::PlayNote(Note* _note)
 {
+	Serial.println("PlayNote");
 #if !defined (__AVR__) && !defined (__avr__)
 	Beep(_note->GetFrequency(), 100);
 #elif defined BUZZER_TEST
-	tone(7, noteFreq);
 	Serial.println("Sound");
+	tone(7, noteFreq);
+	
 #endif 
 	SendNoteValue(GetNoteValue(_note));
 }
