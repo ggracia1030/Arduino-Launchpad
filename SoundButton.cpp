@@ -27,7 +27,6 @@ SoundButton::~SoundButton()
 }
 
 void SoundButton::Action() {
-	Serial.println("Action");
 	soundManager->PlayNote(sound);
 }
 
