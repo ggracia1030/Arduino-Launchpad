@@ -34,12 +34,17 @@ void LaunchpadManager::Update() {
 
 void LaunchpadManager::UpdateInput() {
 #if defined (__AVR__) || defined (__avr__)
+	int temp = 0;
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if (inputManager->GetSoundButton(x, y)->GetButton()) {
+				temp++;
 				inputManager->GetSoundButton(x, y)->Action();
 			}
 		}
+	}
+	if (temp == 0) {
+		notone(7);
 	}
 
 #else
