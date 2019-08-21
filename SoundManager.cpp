@@ -54,6 +54,8 @@ void SoundManager::PlayNote(int noteFreq)
 {
 #if !defined (__AVR__) && !defined (__avr__)
 	Beep(noteFreq, 100);
+#elif defined BUZZER_TEST
+	tone(7, noteFreq);
 #endif 
 
 	SendNoteValue(GetNoteValue(noteFreq));
