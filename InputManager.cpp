@@ -37,13 +37,13 @@ void InputManager::EarlyUpdate()
 {
 	for (int y = 0; y < soundButtonsLength; y++) {
 #if defined (__AVR__) || defined (__avr__)
-		digitalWrite(firstSoundButtonPin + soundButtonsLength + i, HIGH);
+		digitalWrite(firstSoundButtonPin + soundButtonsLength + y, HIGH);
 #endif
 		for (int x = 0; x < soundButtonsLength; x++) {
 			soundButtons[x][y]->Update();
 		}
 #if defined (__AVR__) || defined (__avr__)
-		digitalWrite(firstSoundButtonPin + soundButtonsLength + i, LOW);
+		digitalWrite(firstSoundButtonPin + soundButtonsLength + y, LOW);
 #endif
 	}
 	acceptButton->Update();
