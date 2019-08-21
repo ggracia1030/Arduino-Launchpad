@@ -56,6 +56,7 @@ void SoundManager::PlayNote(int noteFreq)
 	Beep(noteFreq, 100);
 #elif defined BUZZER_TEST
 	tone(7, noteFreq);
+	Serial.println("Sound");
 #endif 
 
 	SendNoteValue(GetNoteValue(noteFreq));
