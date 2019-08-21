@@ -44,7 +44,7 @@ void LaunchpadManager::UpdateInput() {
 		}
 	}
 	if (temp == 0) {
-		notone(7);
+		noTone(7);
 	}
 
 #else
