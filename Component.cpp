@@ -20,6 +20,7 @@ Component::Component(unsigned int _pin, PinMode _pinMode) {
 			pinMode(pin, INPUT_PULLUP);
 			break;
 	}
+	Serial.begin(9600);
 #endif
 }
 
