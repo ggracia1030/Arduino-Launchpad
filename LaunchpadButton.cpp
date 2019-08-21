@@ -5,7 +5,7 @@ LaunchpadButton::LaunchpadButton(char _keyboard) : Component() {
 	keyboard = _keyboard;
 }
 
-LaunchpadButton::LaunchpadButton(unsigned int _pin, PinMode pinMode, char _keyboard) : Component(_pin, PinMode::_INPUT_PULLUP_) {
+LaunchpadButton::LaunchpadButton(unsigned int _pin, PinMode pinMode, char _keyboard) : Component(_pin, PinMode::_INPUT_) {
 	componentName = "Launchpad Button";
 	keyboard = _keyboard;
 }

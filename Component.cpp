@@ -51,14 +51,19 @@ bool Component::DigitalRead()
 
 void Component::DigitalWrite(bool value)
 {
+	Component::DigitalWrite(pin, value);
+}
+
+void Component::DigitalWrite(int _pin, bool value)
+{
 #if defined(__AVR__) || (__avr__)
 	if (value)
-		digitalWrite(pin, HIGH);
+		digitalWrite(_pin, HIGH);
 
-	else digitalWrite(pin, LOW);
+	else digitalWrite(_pin, LOW);
 #else
 	std::cout << "\n----------------------------------------" << std::endl;
-	std::cout << "Digital Write of component " + componentName + " in pin : " << pin << " with value: " << value << std::endl;
+	std::cout << "Digital Write of component " + componentName + " in pin : " << _pin << " with value: " << value << std::endl;
 #endif
 }
 

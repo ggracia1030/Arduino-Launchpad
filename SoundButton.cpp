@@ -7,8 +7,8 @@ SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char
 	yPin = _yPin;
 
 #if defined (__AVR__) || defined (__avr__)
-	pinMode(_xPin, INPUT_PULLUP);
-	pinMode(_yPin, INPUT_PULLUP);
+	pinMode(_xPin, INPUT);
+	pinMode(_yPin, OUTPUT);
 #endif
 
 	sound = new Note();
@@ -37,7 +37,9 @@ bool SoundButton::isButtonPressed()
 	String tempString = "Button Pressed | " + sound->ToString(); + " | Pin X = " + (String)xPin + " | Pin Y = " + (String)yPin;
 	Serial.println(tempString);
 #endif
-	return DigitalRead(xPin) && DigitalRead(yPin);
+	DigitalWrite(yPin, true);
+	return DigitalRead(xPin);
+	DigitalWrite(yPin, false);
 #else
 	return LaunchpadButton::isButtonPressed();
 #endif

@@ -23,6 +23,7 @@ public:
 	bool DigitalRead(int _pin);
 	bool DigitalRead();
 	void DigitalWrite(bool value);
+	void DigitalWrite(int _pin, bool value);
 	int AnalogRead();
 	void AnalogWrite(unsigned int value);
 
