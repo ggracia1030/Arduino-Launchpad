@@ -44,7 +44,9 @@ void LaunchpadManager::UpdateInput() {
 		}
 	}
 	if (temp == 0) {
+#if defined (BUZZER_TEST)
 		noTone(7);
+#endif
 	}
 
 #else
