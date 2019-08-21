@@ -16,6 +16,7 @@ LaunchpadButton::~LaunchpadButton() {
 
 bool LaunchpadButton::GetButton()
 {
+	Serial.println("GetButton: " + (String)currentState);
 	return currentState;
 }
 
