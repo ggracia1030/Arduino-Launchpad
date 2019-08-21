@@ -31,5 +31,6 @@ private:
 	LaunchpadButton* cancelButton;
 
 	int soundButtonsLength;
+	int firstSoundButtonPin;
 };
 

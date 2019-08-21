@@ -33,13 +33,13 @@ void SoundButton::Action() {
 bool SoundButton::isButtonPressed()
 {
 #if defined (__AVR__) || (__avr__)
-#if defined ARDUINO_DEBUG
+//#if defined ARDUINO_DEBUG
 	String tempString = "Button Pressed | " + sound->ToString(); + " | Pin X = " + (String)xPin + " | Pin Y = " + (String)yPin;
 	Serial.println(tempString);
-#endif
-	DigitalWrite(yPin, true);
+//#endif
+	//DigitalWrite(yPin, true);
 	bool value = DigitalRead(xPin);
-	DigitalWrite(yPin, false);
+	//DigitalWrite(yPin, false);
 	return value;
 #else
 	return LaunchpadButton::isButtonPressed();

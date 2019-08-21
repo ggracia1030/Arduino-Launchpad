@@ -15,7 +15,7 @@ InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, 
 			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 4);
 		}
 	}
-
+	firstSoundButtonPin = _firstPin;
 	acceptButton = new LaunchpadButton(_acceptBtnPin, Component::PinMode::_INPUT_PULLUP_, 'U');
 	cancelButton = new LaunchpadButton(_cancelBtnPin, Component::PinMode::_INPUT_PULLUP_, 'I');
 }
@@ -36,9 +36,15 @@ InputManager::~InputManager()
 void InputManager::EarlyUpdate()
 {
 	for (int y = 0; y < soundButtonsLength; y++) {
+#if defined (__AVR__) || defined (__avr__)
+		digitalWrite(firstSoundButtonPin + soundButtonsLength + i, HIGH);
+#endif
 		for (int x = 0; x < soundButtonsLength; x++) {
 			soundButtons[x][y]->Update();
 		}
+#if defined (__AVR__) || defined (__avr__)
+		digitalWrite(firstSoundButtonPin + soundButtonsLength + i, LOW);
+#endif
 	}
 	acceptButton->Update();
 	cancelButton->Update();
