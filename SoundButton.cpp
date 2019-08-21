@@ -38,8 +38,9 @@ bool SoundButton::isButtonPressed()
 	Serial.println(tempString);
 #endif
 	DigitalWrite(yPin, true);
-	return DigitalRead(xPin);
+	bool value = DigitalRead(xPin);
 	DigitalWrite(yPin, false);
+	return value;
 #else
 	return LaunchpadButton::isButtonPressed();
 #endif

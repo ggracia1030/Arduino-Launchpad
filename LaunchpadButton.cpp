@@ -32,7 +32,7 @@ bool LaunchpadButton::GetButtonUp()
 bool LaunchpadButton::isButtonPressed()
 {
 #if defined (__AVR__) || (__avr__)
-	return !DigitalRead();
+	return DigitalRead();
 #else
 	return Input::GetKey(keyboard);
 #endif
