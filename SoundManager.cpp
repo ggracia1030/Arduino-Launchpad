@@ -69,7 +69,7 @@ void SoundManager::PlayNote(Note* _note)
 #endif
 //#if defined (BUZZER_TEST)
 	Serial.println("Sound");
-	tone(7, noteFreq);
+	tone(7, _note->GetFrequency());
 	
 //#endif 
 	SendNoteValue(GetNoteValue(_note));
