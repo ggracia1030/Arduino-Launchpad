@@ -82,10 +82,9 @@ void LaunchpadManager::UpdateInput() {
 #endif
 }
 
-
+#if !defined (__AVR__) && !defined (__avr__)
 void LaunchpadManager::Render()
 {
-#if !defined (__AVR__) && !defined (__avr__)
 	console->CleanBuffers();
 	std::string tempString = "";
 	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
@@ -135,8 +134,8 @@ void LaunchpadManager::Render()
 	console->WriteStringBuffer(35, 2, tempString, EForeColor::White);
 
 	console->RenderBuffers();
-#endif
 }
+#endif
 
 LaunchpadManager::~LaunchpadManager() {
 	if (inputManager != nullptr) 
