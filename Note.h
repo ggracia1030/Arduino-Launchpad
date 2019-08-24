@@ -10,13 +10,19 @@
 #include <WString.h>
 #endif
 
-class Note {
 
+
+class Note {
+	const int MIN_OCTAVE = 3;
+	const int MAX_0CTAVE = 7;
     public:
 
-        enum Notes {
-            C, CS, D, DS, E, F, FS, G, GS, A, AS, B
-        }; 
+		enum Notes {
+			C, CS, D, DS, E, F, FS, G, GS, A, AS, B
+		};
+
+		Notes GuitarTunningNotes[6] = { E, A, D, G, B, E };
+		int GuitarTunningOctaves[6] = { 3, 3, 4, 4, 4, 5 };
 
 		enum SoundType {
 
@@ -32,7 +38,8 @@ class Note {
             2093, 2217, 2349, 2489, 2637, 2794, 2960, 3136, 3322, 3520, 3729, 3951
         };
 
-		
+		Note operator +(int semitones);
+		Note operator = (Note other);
 
         Note();
         Note(Notes _note, int _ocatve);
@@ -40,6 +47,8 @@ class Note {
         void SetOctave(int value);
         void SetNote(Notes _note);
 		void SetNote(Notes _note, int octave);
+
+		
 
         int GetFrequency() {
             return frequency;
@@ -54,8 +63,6 @@ class Note {
         Notes note;
         int octave;
         int frequency;
-		Notes GuitarTunningNotes[6] = { E, A, D, G, B, E };
-		int GuitarTunningOctaves[6] = { 2, 2, 3, 3, 3, 4 };
 };
 
 #endif

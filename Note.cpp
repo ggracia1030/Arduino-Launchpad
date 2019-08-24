@@ -1,5 +1,24 @@
 #include"Note.h"
 
+Note Note::operator+(int semitones)
+{
+	Note temp = *this;
+
+	if (temp.note + semitones > B) {
+		temp.octave++;
+	}
+	temp.note = (Notes)((temp.note + semitones) % 12);
+	
+
+	return temp;
+}
+
+Note Note::operator=(Note other)
+{
+	this->SetNote(other.note, other.octave);
+	return *this;
+}
+
 Note::Note() {
 	Note(A, 4);
 }
@@ -11,7 +30,7 @@ Note::Note(Notes _note, int _octave) {
 
 void Note::SetOctave(int value) {
 
-    if(value < 1) { value = 1; }
+    if(value <	MIN_OCTAVE) { value = MIN_OCTAVE; }
     else if(value > 7) { value = 7; }
 
     octave = value;
@@ -24,7 +43,7 @@ void Note::SetNote(Notes _note) {
 
 void Note::SetNote(Notes _note, int octave)
 {
-	SetNote(_note);
+	note = _note;
 	SetOctave(octave);
 }
 #if !defined (__AVR__) && !defined (__avr__)

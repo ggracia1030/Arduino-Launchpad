@@ -25,19 +25,17 @@ void SoundButton::OnButtonDown() {
 	soundManager->PlayNote(sound, soundChannel);
 }
 void SoundButton::OnButtonUp() {
-	soundManager->PlayNote(sound, soundChannel);
+	soundManager->StopChannel(soundChannel);
 }
 
 bool SoundButton::isButtonPressed()
 {
 #if defined (__AVR__) || (__avr__)
-	//DigitalWrite(yPin, true);
 	bool value = digitalRead(xPin) == HIGH;
 	if (value) {
 		String tempString = "Button Pressed | " + sound->ToString(); +" | Pin X = " + (String)xPin + " | Pin Y = " + (String)yPin;
 		Serial.println(tempString);
 	}
-	//DigitalWrite(yPin, false);
 	return value;
 #else
 	return LaunchpadButton::isButtonPressed();

@@ -129,8 +129,11 @@ private:
 	friend class SoundManager;
 	friend class Component;
 
-	~Console();
+	
+public:
 	Console();
+	~Console();
+private:
 
 
 	int buffersSize;

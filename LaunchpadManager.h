@@ -14,22 +14,25 @@
 class LaunchpadManager {
 
     public:
-		LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin);
+		LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd);
+		LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd, Console* _console);
+		//LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin);
         ~LaunchpadManager();
 		
 
         void Update();
-		int GetButtonsLength() { return length; };
 
     private:
 		void UpdateInput();
+#if !defined (__AVR__) && !defined (__avr__)
 		void Render();
+#endif
 
 		InputManager* inputManager;
 		SoundManager*soundManager;
 		LCDScreen* lcdScreen;
 
-        int length;
+        //int length;
 #if !defined (__AVR__) && !defined (__avr__)
 		friend class SoundManager;
 		Console* console;

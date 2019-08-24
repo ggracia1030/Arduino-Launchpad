@@ -12,7 +12,9 @@ InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, 
 	for (int y = 0; y < _soundButtonsLength; y++) {
 		for (int x = 0; x < _soundButtonsLength; x++) {
 			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + _soundButtonsLength + y, 0, KeyboardBtnToChar((KeyboardButtons)(y * _soundButtonsLength + x)));
-			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 4);
+			//soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 1);
+			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)(soundButtons[x][y]->GetSound()->GuitarTunningNotes[x]), soundButtons[x][y]->GetSound()->GuitarTunningOctaves[x]);
+			*(soundButtons[x][y]->GetSound()) = *(soundButtons[x][y]->GetSound()) + y;
 		}
 	}
 	firstSoundButtonPin = _firstPin;
@@ -73,6 +75,12 @@ const char InputManager::KeyboardBtnToChar(KeyboardButtons btn) {
 	case Four:
 		temp = '4';
 		break;
+	case Five:
+		temp = '5';
+		break;
+	case Six:
+		temp = '6';
+		break;
 
 	case Q:
 		temp = 'Q';
@@ -85,6 +93,12 @@ const char InputManager::KeyboardBtnToChar(KeyboardButtons btn) {
 		break;
 	case R:
 		temp = 'R';
+		break;
+	case T:
+		temp = 'T';
+		break;
+	case Y:
+		temp = 'Y';
 		break;
 
 	case A:
@@ -99,6 +113,12 @@ const char InputManager::KeyboardBtnToChar(KeyboardButtons btn) {
 	case F:
 		temp = 'F';
 		break;
+	case G:
+		temp = 'G';
+		break;
+	case H:
+		temp = 'H';
+		break;
 
 	case Z:
 		temp = 'Z';
@@ -111,6 +131,12 @@ const char InputManager::KeyboardBtnToChar(KeyboardButtons btn) {
 		break;
 	case V:
 		temp = 'V';
+		break;
+	case B:
+		temp = 'B';
+		break;
+	case N:
+		temp = 'N';
 		break;
 	}
 

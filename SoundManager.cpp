@@ -5,7 +5,7 @@
 #include <Windows.h>
 #endif
 
-SoundManager::SoundManager(long _oscillatorFreq, int _channels)
+SoundManager::SoundManager(long _oscillatorFreq, int _channels, SoundChip* _soundChip)
 {
 	oscillatorFreq = _oscillatorFreq;
 	channelsLength = _channels;
@@ -14,12 +14,18 @@ SoundManager::SoundManager(long _oscillatorFreq, int _channels)
 		channels[i] = new bool;
 		*(channels[i]) = true;
 	}
-	volume = 0;
+
+	generalVolume = MAX_VOLUME;
+
+	for (int i = 0; i < 4; i++) {
+		channelVolume[i] = MAX_VOLUME;
+	}
 	release = 0;
+	soundChip = _soundChip;
 	
 }
 #if !defined (__AVR__) && !defined (__avr__)
-SoundManager::SoundManager(long _oscillatorFreq, int _channels, Console* _console)
+SoundManager::SoundManager(long _oscillatorFreq, int _channels, SoundChip* _soundChip, Console* _console)
 {
 	oscillatorFreq = _oscillatorFreq;
 	channelsLength = _channels;
@@ -28,16 +34,27 @@ SoundManager::SoundManager(long _oscillatorFreq, int _channels, Console* _consol
 		channels[i] = new bool;
 		*(channels[i]) = true;
 	}
-	volume = 0;
+
+	generalVolume = MAX_VOLUME;
+
+	for (int i = 0; i < 4; i++) {
+		channelVolume[i] = MAX_VOLUME;
+	}
+
+	generalVolume = MAX_VOLUME;
 	release = 0;
 
 	console = _console;
+	soundChip = _soundChip;
 }
 #endif
 SoundManager::~SoundManager()
 {
 	if (channels != nullptr) {
 		delete[] channels;
+	}
+	if (soundChip != nullptr) {
+		delete soundChip;
 	}
 }
 
@@ -49,8 +66,7 @@ void SoundManager::PlayNote(int noteFreq, int channel)
 	tone(7, noteFreq);
 	Serial.println("Sound");
 #endif 
-
-	SendNoteValue(GetNoteValue(noteFreq), channel);
+	soundChip->SendNoteValue(GetNoteValue(noteFreq), channel);
 }
 
 void SoundManager::PlayNote(Note* _note, int channel)
@@ -63,13 +79,39 @@ void SoundManager::PlayNote(Note* _note, int channel)
 	tone(7, _note->GetFrequency());*/
 	
 //#endif 
-	std::cout << "Byte: " << 0b10000000 << std::endl;
-	SendNoteValue(GetNoteValue(_note), channel);
+
+	soundChip->SendNoteValue(GetNoteValue(_note), channel);
+}
+
+void SoundManager::SetVolume(uint8_t volume, uint8_t channel)
+{
+	channelVolume[channel] = volume;
+	volume = MAX_VOLUME - volume;
+	soundChip->SetVolume(volume, channel);
 }
 
 void SoundManager::StopChannel(int channel)
 {
-	//Send byte to put the volume of the channel to 0
+	soundChip->SetVolume(15, channel);
+}
+
+void SoundManager::StopAllChannels()
+{
+	for (int i = 0; i < channelsLength; i++) {
+		StopChannel(i);
+	}
+}
+
+void SoundManager::MuteChannel(int channel)
+{
+	SetVolume(0, channel);
+}
+
+void SoundManager::MuteAllChannels()
+{
+	for (int i = 0; i < channelsLength; i++) {
+		MuteChannel(i);
+	}
 }
 
 const uint16_t SoundManager::GetNoteValue(int noteFreq)
@@ -97,15 +139,4 @@ const int SoundManager::GetFirstFreeChannel()
 	return 0;
 }
 
-void SoundManager::SendNoteValue(uint16_t noteValue, uint8_t volume, uint8_t channel)
-{
-	SendByte(SN76489_NIBBLE_TONE(channel) | noteValue & 0b1111);
-	if (noteValue > 0b1111) {
-		SendByte((noteValue >> 4));
-	}
-	SendByte(SN76489_NIBBLE_VOL(channel) | volume);
-}
 
-void SoundManager::SendByte(byte _byte)
-{
-}

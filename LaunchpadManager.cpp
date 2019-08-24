@@ -1,6 +1,30 @@
 #include "LaunchpadManager.h"
 
-LaunchpadManager::LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin) {
+LaunchpadManager::LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd)
+{
+	lcdScreen = _lcd;
+	soundManager = _sound;
+	inputManager = _input;
+}
+
+LaunchpadManager::LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd, Console* _console)
+{
+	lcdScreen = _lcd;
+	soundManager = _sound;
+	inputManager = _input;
+
+#if !defined (__AVR__) && !defined (__avr__)
+	console = _console;
+	buttonPushSprite = LoadSprite("src/sprites/buttonPush.txt");
+	buttonAcceptSprite = LoadSprite("src/sprites/buttonAccept.txt");
+	buttonCancelSprite = LoadSprite("src/sprites/buttonCancel.txt");
+	buttonSoundSprite = LoadSprite("src/sprites/buttonSound.txt");
+	buttonSmall = LoadSprite("src/sprites/smallButton.txt");
+	lcdScreenSprite = LoadSprite("src/sprites/lcdScreen.txt");
+#endif
+}
+
+/*LaunchpadManager::LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin) {
 	length = _length;
 	lcdScreen = new LCDScreen();
 	
@@ -19,7 +43,7 @@ LaunchpadManager::LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin
 #endif
 
 	inputManager = new InputManager(_firstPin, _acceptBtnPin, _cancelBtnPin, _length, soundManager);
-}
+}*/
 
 void LaunchpadManager::Update() {
 	inputManager->EarlyUpdate();
@@ -34,8 +58,8 @@ void LaunchpadManager::Update() {
 
 void LaunchpadManager::UpdateInput() {
 #if defined (__AVR__) || defined (__avr__)
-	for (int y = 0; y < length; y++) {
-		for (int x = 0; x < length; x++) {
+	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
+		for (int x = 0; x < inputManager->GetSoundButtonsLength(); x++) {
 			if (inputManager->GetSoundButton(x, y)->GetButtonDown()) {
 				inputManager->GetSoundButton(x, y)->OnButtonDown();
 			}
@@ -50,8 +74,8 @@ void LaunchpadManager::UpdateInput() {
 	}
 
 #else
-	for (int y = 0; y < length; y++) {
-		for (int x = 0; x < length; x++) {
+	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
+		for (int x = 0; x < inputManager->GetSoundButtonsLength(); x++) {
 			if(inputManager->GetSoundButton(x, y)->GetButtonDown()) {
 				inputManager->GetSoundButton(x, y)->OnButtonDown();
 			}
@@ -66,8 +90,8 @@ void LaunchpadManager::Render()
 #if !defined (__AVR__) && !defined (__avr__)
 	console->CleanBuffers();
 	std::string tempString = "";
-	for (int y = 0; y < length; y++) {
-		for (int x = 0; x < length; x++) {
+	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
+		for (int x = 0; x < inputManager->GetSoundButtonsLength(); x++) {
 			if (inputManager->GetSoundButton(x, y)->GetButton()) {
 				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonPushSprite);
 			}
@@ -112,9 +136,6 @@ void LaunchpadManager::Render()
 	tempString = " Cancel";
 	console->WriteStringBuffer(35, 2, tempString, EForeColor::White);
 
-	tempString = "Byte: " + std::to_string(0b11111111);
-	console->WriteStringBuffer(35, 20, tempString, EForeColor::White);
-
 	console->RenderBuffers();
 #endif
 }
@@ -125,6 +146,9 @@ LaunchpadManager::~LaunchpadManager() {
 
 	if(soundManager != nullptr)
 		delete soundManager;
+
+	if (lcdScreen != nullptr)
+		delete lcdScreen;
 
 #if !defined (__AVR__) && !defined (__avr__)
 	if (console != nullptr)
