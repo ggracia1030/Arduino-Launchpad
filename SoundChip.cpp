@@ -16,11 +16,11 @@ SoundChip::~SoundChip()
 void SoundChip::SendByte(byte _data)
 {
 #if defined (__AVR__) || defined (__avr__)
-	digitWrite(pinNotWE, HIGH);
+	digitalWrite(pinNotWE, HIGH);
 	PutByte(_data);
-	digitWrite(pinNotWE, LOW);
+	digitalWrite(pinNotWE, LOW);
 	delayMicroseconds(SN76489_PULSE_WE);
-	digitWrite(pinNotWE, HIGH);
+	digitalWrite(pinNotWE, HIGH);
 #endif
 }
 
