@@ -7,7 +7,7 @@ LaunchpadManager::LaunchpadManager(InputManager* _input, SoundManager* _sound, L
 	inputManager = _input;
 }
 
-#if !defined(__AVR__) || !defined (__avr__)
+#if !defined(__AVR__) && !defined (__avr__)
 LaunchpadManager::LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd, Console* _console)
 {
 	lcdScreen = _lcd;
