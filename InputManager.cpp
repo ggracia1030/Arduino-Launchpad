@@ -11,7 +11,7 @@ InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, 
 
 	for (int y = 0; y < _soundButtonsLength; y++) {
 		for (int x = 0; x < _soundButtonsLength; x++) {
-			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + _soundButtonsLength + y, KeyboardBtnToChar((KeyboardButtons)(y * _soundButtonsLength + x)));
+			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + _soundButtonsLength + y, 0, KeyboardBtnToChar((KeyboardButtons)(y * _soundButtonsLength + x)));
 			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 4);
 		}
 	}

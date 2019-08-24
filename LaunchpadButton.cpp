@@ -43,7 +43,10 @@ void LaunchpadButton::Update() {
 	currentState = isButtonPressed();
 }
 
-void LaunchpadButton::Action()
+void LaunchpadButton::OnButtonDown()
+{
+}
+void LaunchpadButton::OnButtonUp()
 {
 }
 

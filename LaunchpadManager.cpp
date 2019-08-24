@@ -34,18 +34,18 @@ void LaunchpadManager::Update() {
 
 void LaunchpadManager::UpdateInput() {
 #if defined (__AVR__) || defined (__avr__)
-	int temp = 0;
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
-			if (inputManager->GetSoundButton(x, y)->GetButton()) {
-				temp++;
-				inputManager->GetSoundButton(x, y)->Action();
+			if (inputManager->GetSoundButton(x, y)->GetButtonDown()) {
+				inputManager->GetSoundButton(x, y)->OnButtonDown();
+			}
+			else if (inputManager->GetSoundButton(x, y)->GetButtonUp()) {
+				inputManager->GetSoundButton(x, y)->OnButtonUp();
 			}
 		}
 	}
-	if (temp == 0) {
 #if defined (BUZZER_TEST)
-		noTone(7);
+		
 #endif
 	}
 
@@ -53,7 +53,7 @@ void LaunchpadManager::UpdateInput() {
 	for (int y = 0; y < length; y++) {
 		for (int x = 0; x < length; x++) {
 			if(inputManager->GetSoundButton(x, y)->GetButtonDown()) {
-				inputManager->GetSoundButton(x, y)->Action();
+				inputManager->GetSoundButton(x, y)->OnButtonDown();
 			}
 		}
 	}
@@ -111,6 +111,9 @@ void LaunchpadManager::Render()
 	console->WriteStringBuffer(25, 2, tempString, EForeColor::White);
 	tempString = " Cancel";
 	console->WriteStringBuffer(35, 2, tempString, EForeColor::White);
+
+	tempString = "Byte: " + std::to_string(0b11111111);
+	console->WriteStringBuffer(35, 20, tempString, EForeColor::White);
 
 	console->RenderBuffers();
 #endif

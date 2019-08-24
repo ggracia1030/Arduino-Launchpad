@@ -20,7 +20,8 @@ public:
 	bool GetButtonDown();
 	bool GetButtonUp();
 
-	virtual void Action();
+	virtual void OnButtonDown();
+	virtual void OnButtonUp();
 protected:
 	friend class InputManager;
 	char keyboard;

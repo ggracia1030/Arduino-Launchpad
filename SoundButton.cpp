@@ -1,10 +1,11 @@
 #include "SoundButton.h"
 
-SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char _keyboard) : LaunchpadButton(_keyboard) {
+SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, int _soundChannel, char _keyboard) : LaunchpadButton(_keyboard) {
 	componentName = "Sound Button";
 	soundManager = _soundManager;
 	xPin = _xPin;
 	yPin = _yPin;
+	soundChannel = _soundChannel;
 
 #if defined (__AVR__) || defined (__avr__)
 	pinMode(_xPin, INPUT);
@@ -14,20 +15,17 @@ SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, char
 	sound = new Note();
 }
 
-SoundButton::SoundButton(SoundManager* _soundManager, Note::Notes _note, int octave, char _keyboard) : LaunchpadButton(_keyboard) {
-	componentName = "Sound Button";
-	soundManager = _soundManager;
-	sound = new Note(_note, octave);
-}
-
 SoundButton::~SoundButton()
 {
 	if (sound != nullptr)
 		delete sound;
 }
 
-void SoundButton::Action() {
-	soundManager->PlayNote(sound);
+void SoundButton::OnButtonDown() {
+	soundManager->PlayNote(sound, soundChannel);
+}
+void SoundButton::OnButtonUp() {
+	soundManager->PlayNote(sound, soundChannel);
 }
 
 bool SoundButton::isButtonPressed()

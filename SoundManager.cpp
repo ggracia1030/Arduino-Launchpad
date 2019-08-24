@@ -41,16 +41,7 @@ SoundManager::~SoundManager()
 	}
 }
 
-void SoundManager::SendNoteValue(uint16_t noteValue)
-{
-#if defined (__AVR__) || (__avr__)
-	//Lo que tenga que hacer con el chip
-#else
-	
-#endif
-}
-
-void SoundManager::PlayNote(int noteFreq)
+void SoundManager::PlayNote(int noteFreq, int channel)
 {
 #if !defined (__AVR__) && !defined (__avr__)
 	Beep(noteFreq, 100);
@@ -59,20 +50,26 @@ void SoundManager::PlayNote(int noteFreq)
 	Serial.println("Sound");
 #endif 
 
-	SendNoteValue(GetNoteValue(noteFreq));
+	SendNoteValue(GetNoteValue(noteFreq), channel);
 }
 
-void SoundManager::PlayNote(Note* _note)
+void SoundManager::PlayNote(Note* _note, int channel)
 {
 #if !defined (__AVR__) && !defined (__avr__)
 	Beep(_note->GetFrequency(), 100);
 #endif
 //#if defined (BUZZER_TEST)
-	Serial.println("Sound");
-	tone(7, _note->GetFrequency());
+	/*Serial.println("Sound");
+	tone(7, _note->GetFrequency());*/
 	
 //#endif 
-	SendNoteValue(GetNoteValue(_note));
+	std::cout << "Byte: " << 0b10000000 << std::endl;
+	SendNoteValue(GetNoteValue(_note), channel);
+}
+
+void SoundManager::StopChannel(int channel)
+{
+	//Send byte to put the volume of the channel to 0
 }
 
 const uint16_t SoundManager::GetNoteValue(int noteFreq)
@@ -98,4 +95,17 @@ const int SoundManager::GetFirstFreeChannel()
 		if (*(channels[i])) return i;
 	}
 	return 0;
+}
+
+void SoundManager::SendNoteValue(uint16_t noteValue, uint8_t volume, uint8_t channel)
+{
+	SendByte(SN76489_NIBBLE_TONE(channel) | noteValue & 0b1111);
+	if (noteValue > 0b1111) {
+		SendByte((noteValue >> 4));
+	}
+	SendByte(SN76489_NIBBLE_VOL(channel) | volume);
+}
+
+void SoundManager::SendByte(byte _byte)
+{
 }
