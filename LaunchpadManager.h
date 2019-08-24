@@ -15,7 +15,9 @@ class LaunchpadManager {
 
     public:
 		LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd);
+#if !defined(__AVR__) || !defined (__avr__)
 		LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd, Console* _console);
+#endif
 		//LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin);
         ~LaunchpadManager();
 		

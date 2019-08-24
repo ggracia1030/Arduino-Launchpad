@@ -7,22 +7,22 @@ LaunchpadManager::LaunchpadManager(InputManager* _input, SoundManager* _sound, L
 	inputManager = _input;
 }
 
+#if !defined(__AVR__) || !defined (__avr__)
 LaunchpadManager::LaunchpadManager(InputManager* _input, SoundManager* _sound, LCDScreen* _lcd, Console* _console)
 {
 	lcdScreen = _lcd;
 	soundManager = _sound;
 	inputManager = _input;
-
-#if !defined (__AVR__) && !defined (__avr__)
 	console = _console;
+
 	buttonPushSprite = LoadSprite("src/sprites/buttonPush.txt");
 	buttonAcceptSprite = LoadSprite("src/sprites/buttonAccept.txt");
 	buttonCancelSprite = LoadSprite("src/sprites/buttonCancel.txt");
 	buttonSoundSprite = LoadSprite("src/sprites/buttonSound.txt");
 	buttonSmall = LoadSprite("src/sprites/smallButton.txt");
 	lcdScreenSprite = LoadSprite("src/sprites/lcdScreen.txt");
-#endif
 }
+#endif
 
 /*LaunchpadManager::LaunchpadManager(int _length, int _firstPin, int _acceptBtnPin, int _cancelBtnPin) {
 	length = _length;
