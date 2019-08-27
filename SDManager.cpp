@@ -34,9 +34,6 @@ void SDManager::LoadData(String path)
 
 		file.close();
 	}
-	else {
-		Serial.begin("File: '" + path + "' not found.")
-	}
 }
 #else
 void SDManager::LoadData(std::string path)

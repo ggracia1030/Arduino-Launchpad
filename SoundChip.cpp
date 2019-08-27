@@ -4,7 +4,7 @@ SoundChip::SoundChip(int firstDataPin, int WEPin)
 {
 	pinNotWE = WEPin;
 #if defined (__AVR__) || defined (__avr__)
-	pinMode(pinNoteWE, OUTPUT);
+	pinMode(pinNotWE, OUTPUT);
 #endif
 
 	for (int i = 0; i < DATA_PINS_LENGTH; i++) {

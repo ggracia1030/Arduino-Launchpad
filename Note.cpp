@@ -92,7 +92,7 @@ void Note::SetNote(String _note)
 	}
 	else {
 
-		if (_note.charAt(1) >= '0' && _note.at(1) <= '9') {
+		if (_note.charAt(1) >= '0' && _note.charAt(1) <= '9') {
 			tempOctave = _note.charAt(1) - '0';
 		}
 		else {
