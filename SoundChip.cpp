@@ -10,7 +10,7 @@ SoundChip::SoundChip(int firstDataPin, int WEPin)
 	for (int i = 0; i < DATA_PINS_LENGTH; i++) {
 		dataPins[i] = firstDataPin + i;
 #if defined (__AVR__) || defined (__avr__)
-		pinMode(ataPins[i], OUTPUT);
+		pinMode(dataPins[i], OUTPUT);
 #endif
 	}
 }
