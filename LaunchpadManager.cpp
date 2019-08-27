@@ -68,9 +68,6 @@ void LaunchpadManager::UpdateInput() {
 			}
 		}
 	}
-#if defined (BUZZER_TEST)
-		
-#endif
 #else
 	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
 		for (int x = 0; x < inputManager->GetSoundButtonsLength(); x++) {

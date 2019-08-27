@@ -21,9 +21,11 @@ public:
 	SoundManager(long _oscillatorFreq, int _channels, SoundChip* _soundChip, Console* _console);
 #endif
 	~SoundManager();
-
+	void PlayNote(int noteFreq);
 	void PlayNote(int noteFreq, int channel);
 	void PlayNote(Note* _note, int channel);
+	void PlayNote(Note* note);
+	void PlayNoise(int noise);
 
 	void SetVolume(uint8_t volume, uint8_t channel);
 
@@ -52,8 +54,6 @@ private:
 	int release;
 
 	int oscillatorFreq;
-
-	//void SendNoteValue(uint16_t noteValue, uint8_t channel, uint8_t volume = 20);
 
 #if !defined (__AVR__) && !defined (__avr__)
 	Console* console;

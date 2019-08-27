@@ -12,16 +12,19 @@ public:
 	~SoundButton();
 
 	Note* GetSound() { return sound; }
+	void SetSound(Note* note) { sound = note; }
 	void OnButtonUp();
-	void OnButtonDown();
+	virtual void OnButtonDown();
 
 	const int GetXPin() { return xPin; }
 	const int GetYPin() { return yPin; }
+	void SetSoundChannel(int _channel);
+
+	const int GetSoundChannel() { return soundChannel; }
 
 protected:
 	bool isButtonPressed();
 
-private:
 	Note* sound;
 	int soundChannel;
 	int xPin, yPin;

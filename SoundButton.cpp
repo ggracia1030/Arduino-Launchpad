@@ -6,13 +6,14 @@ SoundButton::SoundButton(SoundManager* _soundManager, int _xPin, int _yPin, int 
 	xPin = _xPin;
 	yPin = _yPin;
 	soundChannel = _soundChannel;
+	//sound = _note;
 
 #if defined (__AVR__) || defined (__avr__)
 	pinMode(_xPin, INPUT);
 	pinMode(_yPin, OUTPUT);
 #endif
 
-	sound = new Note();
+	//sound = new Note();
 }
 
 SoundButton::~SoundButton()
@@ -23,6 +24,10 @@ SoundButton::~SoundButton()
 
 void SoundButton::OnButtonDown() {
 	soundManager->PlayNote(sound, soundChannel);
+}
+void SoundButton::SetSoundChannel(int _channel)
+{
+	soundChannel = _channel;
 }
 void SoundButton::OnButtonUp() {
 	soundManager->StopChannel(soundChannel);

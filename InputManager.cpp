@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager)
+InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager, OptionsManager* optionsManager)
 {
 	soundButtonsLength = _soundButtonsLength;
 
@@ -12,14 +12,21 @@ InputManager::InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, 
 	for (int y = 0; y < _soundButtonsLength; y++) {
 		for (int x = 0; x < _soundButtonsLength; x++) {
 			soundButtons[x][y] = new SoundButton(soundManager, _firstPin + x, _firstPin + _soundButtonsLength + y, 0, KeyboardBtnToChar((KeyboardButtons)(y * _soundButtonsLength + x)));
-			//soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 1);
-			soundButtons[x][y]->GetSound()->SetNote((Note::Notes)(soundButtons[x][y]->GetSound()->GuitarTunningNotes[x]), soundButtons[x][y]->GetSound()->GuitarTunningOctaves[x]);
-			*(soundButtons[x][y]->GetSound()) = *(soundButtons[x][y]->GetSound()) + y;
+			soundButtons[x][y]->SetSound(optionsManager->notes[x][y]);
+
+			/*if (x == _soundButtonsLength - 1) {
+				soundButtons[x][y]->GetSound()->SetNote(Note::Noise, y);
+			}
+			else {
+				//soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 1);
+				soundButtons[x][y]->GetSound()->SetNote((Note::Notes)(soundButtons[x][y]->GetSound()->GuitarTunningNotes[x]), soundButtons[x][y]->GetSound()->GuitarTunningOctaves[x]);
+				*(soundButtons[x][y]->GetSound()) = *(soundButtons[x][y]->GetSound()) + y;
+			}*/
 		}
 	}
 	firstSoundButtonPin = _firstPin;
-	acceptButton = new LaunchpadButton(_acceptBtnPin, Component::PinMode::_INPUT_PULLUP_, 'U');
-	cancelButton = new LaunchpadButton(_cancelBtnPin, Component::PinMode::_INPUT_PULLUP_, 'I');
+	acceptButton = new LaunchpadButton(_acceptBtnPin, Component::PinMode::_INPUT_, 'U');
+	cancelButton = new LaunchpadButton(_cancelBtnPin, Component::PinMode::_INPUT_, 'I');
 }
 
 InputManager::~InputManager()

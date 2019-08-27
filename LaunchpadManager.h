@@ -4,6 +4,7 @@
 #include "SoundManager.h"
 #include "InputManager.h"
 #include "LCDScreen.h"
+#include "OptionsManager.h"
 
 #if !defined (__AVR__) && !defined (__avr__)
 #include <fstream>
@@ -33,6 +34,7 @@ class LaunchpadManager {
 		InputManager* inputManager;
 		SoundManager*soundManager;
 		LCDScreen* lcdScreen;
+		OptionsManager* optionsManager;
 
         //int length;
 #if !defined (__AVR__) && !defined (__avr__)

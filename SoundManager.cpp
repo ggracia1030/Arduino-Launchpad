@@ -58,6 +58,11 @@ SoundManager::~SoundManager()
 	}
 }
 
+void SoundManager::PlayNote(int noteFreq)
+{
+	PlayNote(noteFreq, GetFirstFreeChannel());
+}
+
 void SoundManager::PlayNote(int noteFreq, int channel)
 {
 #if !defined (__AVR__) && !defined (__avr__)
@@ -81,6 +86,16 @@ void SoundManager::PlayNote(Note* _note, int channel)
 //#endif 
 
 	soundChip->SendNoteValue(GetNoteValue(_note), channel);
+}
+
+void SoundManager::PlayNote(Note* note)
+{
+	PlayNote(note, GetFirstFreeChannel());
+}
+
+void SoundManager::PlayNoise(int noise)
+{
+	soundChip->SendNoteValue(noise, 3);
 }
 
 void SoundManager::SetVolume(uint8_t volume, uint8_t channel)
@@ -116,7 +131,8 @@ void SoundManager::MuteAllChannels()
 
 const uint16_t SoundManager::GetNoteValue(int noteFreq)
 {
-	return (uint16_t)((float)oscillatorFreq / (float)(2 * 16 * noteFreq));
+	if (noteFreq < 10) return (uint16_t)noteFreq; //si es una frecuencia de ruido devuelvela directamente
+	else return (uint16_t)((float)oscillatorFreq / (float)(32 * noteFreq));
 }
 
 const uint16_t SoundManager::GetNoteValue(Note* note)

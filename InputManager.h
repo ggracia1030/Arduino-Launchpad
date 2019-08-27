@@ -1,5 +1,6 @@
 #pragma once
 #include"SoundButton.h"
+#include "OptionsManager.h"
 
 class InputManager
 {
@@ -12,7 +13,7 @@ public:
 		Z, X, C, V, B, N
 	};
 
-	InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager);
+	InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager, OptionsManager* optionsManager);
 	~InputManager();
 
 	SoundButton* GetSoundButton(int posX, int posY);
