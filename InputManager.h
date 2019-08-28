@@ -7,10 +7,10 @@ class InputManager
 public:
 
 	enum KeyboardButtons {
-		One, Two, Three, Four, Five, Six,
-		Q, W, E, R, T, Y,
-		A, S, D, F, G, H,
-		Z, X, C, V, B, N
+		One, Two, Three, Four, Five, Six, Seven,
+		Q, W, E, R, T, Y, U,
+		A, S, D, F, G, H, J,
+		Z, X, C, V, B, N, K
 	};
 
 	InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager, OptionsManager* optionsManager);

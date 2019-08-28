@@ -17,9 +17,11 @@ public:
 #if defined (__AVR__) || defined (__avr__)
 	void LoadData(String path);
 	void SaveData(String path);
+	String GetPathToLoad();
 #else
 	void LoadData(std::string path);
 	void SaveData(std::string path);
+	std::string GetPathToLoad();
 #endif
 
 private:
