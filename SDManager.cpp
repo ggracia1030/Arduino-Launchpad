@@ -46,7 +46,7 @@ void SDManager::LoadData(String path)
 				while (currentChar != '\n') {
 					currentChar = (char)(file.read());
 					if (currentChar != '\n')
-						tempString += currentChar;
+						temp += currentChar;
 				}
 				notes[x][y]->SetNote(temp);
 			}
@@ -77,7 +77,7 @@ String SDManager::GetPathToLoad()
 		while (currentChar != '\n') {
 			currentChar = (char)(file.read());
 			if(currentChar != '\n')
-				tempString += currentChar;
+				temp += currentChar;
 		}
 		path = "config/" + temp + ".wpad";
 		file.close();
