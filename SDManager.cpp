@@ -38,8 +38,8 @@ SDManager::~SDManager()
 void SDManager::LoadData(String path)
 {
 	file = SD.open(path);
-	String temp;
-	char currentChar = '';
+	String temp = "";
+	char currentChar = '0';
 	if (file) {
 		for (int y = 0; y < notesLength; y++) {
 			for (int x = 0; x < notesLength; x++) {
@@ -71,7 +71,7 @@ String SDManager::GetPathToLoad()
 {
 	String path = "config/";
 	String temp = "";
-	char currentChar = '';
+	char currentChar = '0';
 	file = SD.open("data.wconf");
 	if (file) {
 		while (currentChar != '\n') {
