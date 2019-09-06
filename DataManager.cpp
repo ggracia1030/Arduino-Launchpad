@@ -92,7 +92,7 @@ String DataManager::GetPathToLoad()
 void DataManager::SavePresetName(String name)
 {
 	SavePresetNames();
-	file = SD.open(path, FILE_WRITE);
+	file = SD.open(name, FILE_WRITE);
 	if (file) {
 		file.println(name);
 		file.println("***************");
