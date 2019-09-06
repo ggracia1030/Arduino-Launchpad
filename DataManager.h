@@ -8,21 +8,26 @@
 #include <iostream>
 #include <fstream>
 #endif
-class SDManager
+class DataManager
 {
 public:
-	SDManager(int csPin, int _length);
-	~SDManager();
+	DataManager(int csPin, int _length);
+	~DataManager();
 
 #if defined (__AVR__) || defined (__avr__)
 	void LoadData(String path);
 	void SaveData(String path);
 	String GetPathToLoad();
+	void SavePresetName(String name);
 #else
 	void LoadData(std::string path);
 	void SaveData(std::string path);
 	std::string GetPathToLoad();
+	void SavePresetName(std::string name);
 #endif
+
+	void LoadPresetsNames();
+	void SavePresetNames();
 
 private:
 	friend class OptionsManager;
@@ -31,8 +36,12 @@ private:
 	int notesLength;
 #if defined (__AVR__) || defined (__avr__)
 	File file;
+	String presetNames[16];
+	String currentPreset;
 #else
 	std::fstream file;
+	std::string presetNames[16];
+	std::string currentPreset;
 #endif
 };
 

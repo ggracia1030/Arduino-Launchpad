@@ -1,6 +1,6 @@
-#include "SDManager.h"
+#include "DataManager.h"
 
-SDManager::SDManager(int csPin, int _length)
+DataManager::DataManager(int csPin, int _length)
 {
 	notesLength = _length;
 
@@ -31,11 +31,11 @@ SDManager::SDManager(int csPin, int _length)
 #endif
 }
 
-SDManager::~SDManager()
+DataManager::~DataManager()
 {
 }
 #if defined (__AVR__) || defined (__avr__)
-void SDManager::LoadData(String path)
+void DataManager::LoadData(String path)
 {
 	file = SD.open(path);
 	String temp = "";
@@ -49,45 +49,59 @@ void SDManager::LoadData(String path)
 						temp += currentChar;
 				}
 				notes[x][y]->SetNote(temp);
+				temp = "";
 			}
 		}
 		file.close();
 	}
 }
-void SDManager::SaveData(String path)
+void DataManager::SaveData(String path)
 {
+	SavePresetName(currentPreset);
 	file = SD.open(path, FILE_WRITE);
 	if (file) {
 		for (int y = 0; y < notesLength; y++) {
 			for (int x = 0; x < notesLength; x++) {
-				file.println(notes[x][y]->ToString() + '\n');
+				file.println(notes[x][y]->ToString());
 			}
 		}
 		file.close();
 	}
 }
 
-String SDManager::GetPathToLoad()
+String DataManager::GetPathToLoad()
 {
-	String path = "config/";
+	String path = "data/config/";
 	String temp = "";
 	char currentChar = '0';
-	file = SD.open("data.wconf");
+	file = SD.open("data/data.wconf");
 	if (file) {
 		while (currentChar != '\n') {
 			currentChar = (char)(file.read());
 			if(currentChar != '\n')
 				temp += currentChar;
 		}
-		path = "config/" + temp + ".wpad";
+		path = "data/config/" + temp + ".wpad";
+		temp = "";
 		file.close();
 	}
 
 	return path;
 }
 
+void DataManager::SavePresetName(String name)
+{
+	SavePresetNames();
+	file = SD.open(path, FILE_WRITE);
+	if (file) {
+		file.println(name);
+		file.println("***************");
+		file.close();
+	}
+}
+
 #else
-void SDManager::LoadData(std::string path)
+void DataManager::LoadData(std::string path)
 {
 	file.open(path, std::ios::in);
 	std::string temp = "";
@@ -104,8 +118,9 @@ void SDManager::LoadData(std::string path)
 		std::cout << "File: '" + path + "' not found" << std::endl;
 	}
 }
-void SDManager::SaveData(std::string path)
+void DataManager::SaveData(std::string path)
 {
+	SavePresetName(currentPreset);
 	file.open(path, std::ios::out | std::ios::trunc); 
 	if (file.is_open()) {
 		for (int y = 0; y < notesLength; y++) {
@@ -119,18 +134,79 @@ void SDManager::SaveData(std::string path)
 }
 
 
-std::string SDManager::GetPathToLoad()
+std::string DataManager::GetPathToLoad()
 {
-	std::string path = "config/";
+	std::string path = "data/config/";
 	std::string temp;
 	
-	file.open("data.wconf", std::ios::in);
+	file.open("data/data.wconf", std::ios::in);
 
 	if (file.is_open()) {
 		std::getline(file, temp);
-		path = "config/" + temp + ".wpad";
+		path = "data/config/" + temp + ".wpad";
+		file.close();
 	}
-	file.close();
 	return path;
+}
+
+void DataManager::SavePresetName(std::string name)
+{
+	SavePresetNames();
+
+	file.open("data/data.wconf", std::ios::out | std::ios::trunc);
+
+	if (file.is_open()) {
+		file << name + "\n***************";
+		file.close();
+	}
+}
+
+void DataManager::LoadPresetsNames()
+{
+#if defined (__AVR__) || defined (__avr__)
+	file = SD.open("data/list.wconf");
+	String temp = "";
+	char currentChar = '0';
+	if (file) {
+		for (int i = 0; i < 16; i++) {
+			while (currentChar != '\n') {
+				currentChar = (char)(file.read());
+				if (currentChar != '\n')
+					temp += currentChar;
+			}
+			presetNames[i] = temp;
+			temp = "";
+		}
+		file.close();
+	}
+#else
+	file.open("data/list.wconf", std::ios::in);
+	if (file.is_open()) {
+		for (int i = 0; i < 16; i++) {
+			std::getline(file, presetNames[i]);
+		}
+		file.close();
+	}
+#endif
+}
+void DataManager::SavePresetNames()
+{
+#if defined (__AVR__) || defined (__avr__)
+	file = SD.open("data/list.wconf", FILE_WRITE);
+	if (file) {
+		for (int i = 0; i < 16; i++) {
+			file.println(presetNames[i]);
+		}
+		file.close();
+	}
+#else
+	file.open("data/list.wconf", std::ios::out | std::ios::trunc);
+	if (file.is_open()) {
+		for (int i = 0; i < 16; i++) {
+			file << presetNames[i];
+		}
+		file.close();
+	}
+#endif
 }
 #endif
