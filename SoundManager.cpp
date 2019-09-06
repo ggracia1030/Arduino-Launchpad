@@ -16,12 +16,14 @@ SoundManager::SoundManager(long _oscillatorFreq, int _channels, SoundChip* _soun
 	}
 
 	generalVolume = MAX_VOLUME;
+	soundChip = _soundChip;
 
 	for (int i = 0; i < 4; i++) {
-		channelVolume[i] = MAX_VOLUME;
+		//channelVolume[i] = MAX_VOLUME;
+		SetVolume(MAX_VOLUME, i);
 	}
 	release = 0;
-	soundChip = _soundChip;
+	
 	
 }
 #if !defined (__AVR__) && !defined (__avr__)
