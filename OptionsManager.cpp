@@ -14,7 +14,7 @@ OptionsManager::~OptionsManager()
 void OptionsManager::ChangePreset(String name)
 {
 	//Do Something
-	sdManager->SavePresetName(name);
+	dataManager->SavePresetName(name);
 }
 #else
 void OptionsManager::ChangePreset(std::string name)
