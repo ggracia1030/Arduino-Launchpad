@@ -22,6 +22,7 @@ SoundChip::~SoundChip()
 void SoundChip::SendByte(byte _data)
 {
 #if defined (__AVR__) || defined (__avr__)
+	Serial.println("Sound");
 	digitalWrite(pinNotWE, HIGH);
 	PutByte(_data);
 	digitalWrite(pinNotWE, LOW);
