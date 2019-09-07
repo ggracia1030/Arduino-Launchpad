@@ -33,6 +33,7 @@ void SoundChip::SendByte(byte _data)
 
 void SoundChip::PutByte(byte _data) {
 #if defined (__AVR__) || defined (__avr__)
+	digitalWrite(pinNotWE, HIGH);
 	digitalWrite(dataPins[0], (_data & 1) ? HIGH : LOW);
 	digitalWrite(dataPins[1], (_data & 2) ? HIGH : LOW);
 	digitalWrite(dataPins[2], (_data & 4) ? HIGH : LOW);
@@ -41,7 +42,13 @@ void SoundChip::PutByte(byte _data) {
 	digitalWrite(dataPins[5], (_data & 32) ? HIGH : LOW);
 	digitalWrite(dataPins[6], (_data & 64) ? HIGH : LOW);
 	digitalWrite(dataPins[7], (_data & 128) ? HIGH : LOW);
+
+	digitalWrite(pinNotWE, HIGH);
+	digitalWrite(pinNotWE, LOW);
+	delay(1);
+	digitalWrite(pinNotWE, HIGH);
 #endif
+	
 }
 
 void SoundChip::SendNoteValue(uint16_t noteValue, uint8_t channel)
