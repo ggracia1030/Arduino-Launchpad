@@ -26,7 +26,7 @@ private:
 	friend class LaunchpadManager;
 
 	DataManager* dataManager;
-	Note*** notes;
+	Note** notes;
 	LCDScreen* lcdScreen;
 	SoundManager* soundManager;
 };

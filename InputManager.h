@@ -7,16 +7,13 @@ class InputManager
 public:
 
 	enum KeyboardButtons {
-		One, Two, Three, Four, Five, Six, Seven,
-		Q, W, E, R, T, Y, U,
-		A, S, D, F, G, H, J,
-		Z, X, C, V, B, N, K
+		A, W, S, D, R, F, T, G, Y, H, J, I, K, O, L
 	};
 
 	InputManager(int _firstPin, int _acceptBtnPin, int _cancelBtnPin, int _soundButtonsLength, SoundManager* soundManager, OptionsManager* optionsManager);
 	~InputManager();
 
-	SoundButton* GetSoundButton(int posX, int posY);
+	SoundButton* GetSoundButton(int i);
 	LaunchpadButton* GetAcceptButton() { return acceptButton; }
 	LaunchpadButton* GetCancelButton() { return cancelButton; }
 
@@ -29,7 +26,7 @@ private:
 	friend class LaunchpadManager;
 	void EarlyUpdate();
 
-	SoundButton*** soundButtons;
+	SoundButton** soundButtons;
 	LaunchpadButton* acceptButton;
 	LaunchpadButton* cancelButton;
 

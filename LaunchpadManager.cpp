@@ -69,11 +69,9 @@ void LaunchpadManager::UpdateInput() {
 		}
 	}
 #else
-	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
-		for (int x = 0; x < inputManager->GetSoundButtonsLength(); x++) {
-			if(inputManager->GetSoundButton(x, y)->GetButtonDown()) {
-				inputManager->GetSoundButton(x, y)->OnButtonDown();
-			}
+	for (int i = 0; i < inputManager->GetSoundButtonsLength(); i++) {
+		if (inputManager->GetSoundButton(i)->GetButtonDown()) {
+			inputManager->GetSoundButton(i)->OnButtonDown();
 		}
 	}
 #endif
@@ -84,28 +82,26 @@ void LaunchpadManager::Render()
 {
 	console->CleanBuffers();
 	std::string tempString = "";
-	for (int y = 0; y < inputManager->GetSoundButtonsLength(); y++) {
-		for (int x = 0; x < inputManager->GetSoundButtonsLength(); x++) {
-			if (inputManager->GetSoundButton(x, y)->GetButton()) {
-				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonPushSprite);
-			}
-			else {
-				console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSoundSprite);
-			}
-			tempString = "Note: " + inputManager->GetSoundButton(x, y)->GetSound()->ToString();
-			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, tempString, EForeColor::White);
-
-			tempString = "Freq: " + std::to_string(inputManager->GetSoundButton(x, y)->GetSound()->GetFrequency());
-			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y +  y * PIXEL_SIZE_Y + 1, tempString, EForeColor::White);
-
-			tempString = "Value: " + std::to_string(soundManager->GetNoteValue(inputManager->GetSoundButton(x, y)->GetSound()->GetFrequency()));
-			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
-
-			tempString = "Pins: [" + std::to_string(inputManager->GetSoundButton(x, y)->GetXPin()) + "," +
-				std::to_string(inputManager->GetSoundButton(x, y)->GetYPin()) + "]";
-			console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 3, tempString, EForeColor::White);
+	/*for (int i = 0; i < inputManager->GetSoundButtonsLength(); i++) {
+		if (inputManager->GetSoundButton(i)->GetButton()) {
+			console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonPushSprite);
 		}
-	}
+		else {
+			console->WriteSpriteBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, buttonSoundSprite);
+		}
+		tempString = "Note: " + inputManager->GetSoundButton(x, y)->GetSound()->ToString();
+		console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y, tempString, EForeColor::White);
+
+		tempString = "Freq: " + std::to_string(inputManager->GetSoundButton(x, y)->GetSound()->GetFrequency());
+		console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 1, tempString, EForeColor::White);
+
+		tempString = "Value: " + std::to_string(soundManager->GetNoteValue(inputManager->GetSoundButton(x, y)->GetSound()->GetFrequency()));
+		console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 2, tempString, EForeColor::White);
+
+		tempString = "Pins: [" + std::to_string(inputManager->GetSoundButton(x, y)->GetXPin()) + "," +
+			std::to_string(inputManager->GetSoundButton(x, y)->GetYPin()) + "]";
+		console->WriteStringBuffer(BUTTONS_MATRIX_OFFSET_X + x * PIXEL_SIZE_X, BUTTONS_MATRIX_OFFSET_Y + y * PIXEL_SIZE_Y + 3, tempString, EForeColor::White);
+	}*/
 	console->WriteSpriteBuffer(3, 1, lcdScreenSprite);
 	for (int i = 0; i < 2; i++) {
 		console->WriteStringBuffer(4, 2 + i, lcdScreen->GetString(i), EForeColor::White);

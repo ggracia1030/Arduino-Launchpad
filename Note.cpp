@@ -29,12 +29,6 @@ Note::Note(Notes _note, int _octave) {
 }
 
 void Note::SetOctave(int value) {
-	if (note == Noise) {
-		octave = value;
-		frequency = frequencies[13 * octave + note];
-		return;
-	}
-
     if(value <	MIN_OCTAVE) { value = MIN_OCTAVE; }
     else if(value > 7) { value = 7; }
 
@@ -108,20 +102,14 @@ void Note::SetNote(std::string _note)
 	Notes tempNote = CharToNotes(_note[0]);
 	int tempOctave;
 
-	if (_note.size() > 3) {
-		tempNote = Noise;
-		tempOctave = _note.at(_note.size() - 1) - '0';
+	if (_note.at(1) >= '0' && _note.at(1) <= '9') {
+		tempOctave = _note.at(1) - '0';
 	}
 	else {
-
-		if (_note.at(1) >= '0' && _note.at(1) <= '9') {
-			tempOctave = _note.at(1) - '0';
-		}
-		else {
-			tempNote = (Notes)(tempNote + 1);
-			tempOctave = _note.at(2) - '0';
-		}
+		tempNote = (Notes)(tempNote + 1);
+		tempOctave = _note.at(2) - '0';
 	}
+
 	SetNote(tempNote, tempOctave);
 }
 #endif
@@ -166,10 +154,6 @@ std::string Note::ToString()
 	case B:
 		temp = "B";
 		break;
-	case Noise:
-		temp = "Noise";
-		break;
-	}
 
 	temp += std::to_string(octave);
 	return temp;
@@ -215,10 +199,6 @@ String Note::ToString()
 	case B:
 		temp = "B";
 		break;
-	case Noise:
-		temp = "Noise";
-		break;
-	}
 
 	temp += String(octave);
 	return temp;

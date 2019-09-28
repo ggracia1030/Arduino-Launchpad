@@ -32,7 +32,7 @@ public:
 private:
 	friend class OptionsManager;
 
-	Note*** notes;
+	Note** notes;
 	int notesLength;
 #if defined (__AVR__) || defined (__avr__)
 	File file;

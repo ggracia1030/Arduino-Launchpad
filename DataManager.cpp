@@ -4,24 +4,13 @@ DataManager::DataManager(int csPin, int _length)
 {
 	notesLength = _length;
 
-	notes = new Note **[_length];
+	notes = new Note *[_length];
 	for (int i = 0; i < _length; i++) {
-		notes[i] = new Note * [_length];
+		notes[i] = new Note();
 	}
 
-	for (int y = 0; y < _length; y++) {
-		for (int x = 0; x < _length; x++) {
-			notes[x][y] = new Note();
-
-			if (x == _length - 1) {
-				notes[x][y]->SetNote(Note::Noise, y);
-			}
-			else {
-				//soundButtons[x][y]->GetSound()->SetNote((Note::Notes)((x + _soundButtonsLength * y) % 12), (x + _soundButtonsLength * y) / 12 + 1);
-				notes[x][y]->SetNote((Note::Notes)(notes[x][y]->GuitarTunningNotes[x]), notes[x][y]->GuitarTunningOctaves[x]);
-				*(notes[x][y]) = *(notes[x][y]) + y;
-			}
-		}
+	for (int i = 0; i < _length; i++) {
+		notes[i]->SetNote(Note::Notes(Note::D + i), 3 + i >= 12);
 	}
 
 	LoadData(GetPathToLoad());
@@ -41,16 +30,14 @@ void DataManager::LoadData(String path)
 	String temp = "";
 	char currentChar = '0';
 	if (file) {
-		for (int y = 0; y < notesLength; y++) {
-			for (int x = 0; x < notesLength; x++) {
-				while (currentChar != '\n') {
-					currentChar = (char)(file.read());
-					if (currentChar != '\n')
-						temp += currentChar;
-				}
-				notes[x][y]->SetNote(temp);
-				temp = "";
+		for (int i = 0; y < notesLength; i++) {
+			while (currentChar != '\n') {
+				currentChar = (char)(file.read());
+				if (currentChar != '\n')
+					temp += currentChar;
 			}
+			notes[i]->SetNote(temp);
+			temp = "";
 		}
 		file.close();
 	}
@@ -60,10 +47,8 @@ void DataManager::SaveData(String path)
 	SavePresetName(currentPreset);
 	file = SD.open(path, FILE_WRITE);
 	if (file) {
-		for (int y = 0; y < notesLength; y++) {
-			for (int x = 0; x < notesLength; x++) {
-				file.println(notes[x][y]->ToString());
-			}
+		for (int i = 0; i < notesLength; i++) {
+			file.println(notes[i]->ToString());
 		}
 		file.close();
 	}
@@ -106,11 +91,9 @@ void DataManager::LoadData(std::string path)
 	file.open(path, std::ios::in);
 	std::string temp = "";
 	if (file.is_open()) {
-		for (int y = 0; y < notesLength; y++) {
-			for (int x = 0; x < notesLength; x++) {
-				std::getline(file, temp);
-				notes[x][y]->SetNote(temp);
-			}
+		for (int i = 0; i < notesLength; i++) {
+			std::getline(file, temp);
+			notes[i]->SetNote(temp);
 		}
 		file.close();
 	}
@@ -123,10 +106,8 @@ void DataManager::SaveData(std::string path)
 	SavePresetName(currentPreset);
 	file.open(path, std::ios::out | std::ios::trunc); 
 	if (file.is_open()) {
-		for (int y = 0; y < notesLength; y++) {
-			for (int x = 0; x < notesLength; x++) {
-				file << notes[x][y]->ToString() + '\n';
-			}
+		for (int i = 0; i < notesLength; i++) {
+			file << notes[i]->ToString() + '\n';
 		}
 		std::cout << "Data saved!" << std::endl;
 		file.close();
